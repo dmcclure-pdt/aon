@@ -185,8 +185,7 @@ const getServices = function () {
 getServices();
 
 var service_id = $('#services-dropdown').val();
-var service_id = $('#services-dropdown').val();
-console.log("selected item is: ",);
+console.log("selected item is: ",service_id);
 
 //===================== GET SERVICES =============================
 
