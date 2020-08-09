@@ -61,6 +61,13 @@
 				<h2>Welcome!</h2>
 				<p id="welcome"></p>
 			</div>
+
+			<!-- ================== -->
+			<div class="detail" id="services">
+				<h2>Services Details...</h2>
+				<p id="services-list"></p>
+			</div>
+			<!-- ================== -->
 			<div class="detail" id="integrations">
 				<h2>View Integrations</h2>
 				Service: <select class="selectpicker" id="integrations-service-select"></select>
@@ -82,6 +89,14 @@
 				<h2>Export Users</h2>
 				<div class="result" id="users-export-result"></div>
 			</div>
+			<!-- ============== -->
+			<div class="detail" id="aon-form">
+				<h2>AON Form</h2>
+					<h4>create an AON: <input type="file" id="aon-input" style="display: inline;" accept="text/csv"></h4>
+					Required column headers: <b>name, email</b>; optional column headers: <b>time_zone, color, role, job_title, avatar_url, description</b><br>
+				<div class="result" id="aon-result"></div>
+			</div>
+			<!--========== -->
 			<div class="detail" id="users-import">
 				<h2>Import Users</h2>
 					<h4>Choose a CSV file to import: <input type="file" id="csv-file-input" style="display: inline;" accept="text/csv"></h4>
@@ -157,5 +172,6 @@
 		<script src="js/config.js"></script>
 		<script src="js/auth.js"></script>
 		<script src="js/pagerduty-bulk-user-mgr.js"></script>
+		<script src="js/aon.js"></script>
 	</body>
 </html>
