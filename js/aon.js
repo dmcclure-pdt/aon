@@ -126,8 +126,9 @@ const loadPage = function() {
 }
 // initialize page
 loadPage();
+getServices();
 
-//===================== GET SERVICES 
+//===================== GET SERVICES =============================
 
 const getServices = function () {
 
@@ -163,7 +164,7 @@ const getServices = function () {
     });
 }; // end getServices
 
-//=====================
+//===================== GET SERVICES =============================
 
 
 /**********************
