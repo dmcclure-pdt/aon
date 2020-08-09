@@ -215,13 +215,13 @@ $('#incdetail').change(function() {
     console.log("The incident details are: ",incDetails);
 });
 
-if ($("#useOutageTitle").prop("checked", true )) {
+if ($("#useOutageTitle").prop("checked")) {
     console.log("Copy Inc Title to Status Message Title!")
 } else {
     console.log("Enter Status Message Title!")
 };
 
-if ($("#useOutageDetails").prop("checked", true )) {
+if ($("#useOutageDetails").prop("checked")) {
     console.log("Copy Inc Details to Status Message Details!")
 } else {
     console.log("Enter Status Message Details!")
