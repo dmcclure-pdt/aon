@@ -225,19 +225,14 @@ function copyTitle()
      $("#statustitle").val(incTitle);
 }
 
+$("#useOutageDetails").change(copyDetails);
 
-
-if ($("#useOutageTitle").prop("checked",true)) {
-    console.log("Copy Inc Title to Status Message Title!")
-} else {
-    console.log("Enter Status Message Title!")
-};
-
-if ($("#useOutageDetails").prop("checked",true)) {
-    console.log("Copy Inc Details to Status Message Details!")
-} else {
-    console.log("Enter Status Message Details!")
-};
+function copyDetails()
+{
+   var incDetails=$("#incdetail").val();
+   if (this.checked==true)
+     $("#statusupdate").val(incDetails);
+}
 
 
 
