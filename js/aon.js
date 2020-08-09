@@ -188,14 +188,14 @@ const getServices = function () {
 const getStakeholders = function () {
     console.log("I'm in getStakeholders now....");
 
-    let dropdown = document.getElementById('users-dropdown');
-    dropdown.length = 0;
+    let stakeholderDropdown = document.getElementById('users-dropdown');
+    stakeholderDropdown.length = 0;
     
-    let defaultOption = document.createElement('option');
-    defaultOption.text = 'Choose Stakeholders';
+    let shDefaultOption = document.createElement('option');
+    shDefaultOption.text = 'Choose Stakeholders';
     
-    dropdown.add(defaultOption);
-    dropdown.selectedIndex = 0;
+    stakeholderDropdown.add(shDefaultOption);
+    stakeholderDropdown.selectedIndex = 0;
 
     const PDJS = initPDJS();
 
@@ -218,7 +218,7 @@ const getStakeholders = function () {
                 option.text = users[i].name;
                 option.value = users[i].id;
                 //console.log("the option is: " + option.text + " : " + option.value);
-                dropdown.add(option);
+                stakeholderDropdown.add(option);
             }
         }
     });
