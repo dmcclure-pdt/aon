@@ -155,7 +155,7 @@ const getServices = function () {
         final_success: function(data) {
             console.log("Got all the data!");
             let services = data.services;
-            console.log("Services data is: " + JSON.stringify(services));
+            //console.log("Services data is: " + JSON.stringify(services));
 
             // let serviceHTML = `<ul class="list-group">`;
             // services.map(service => {
@@ -183,6 +183,10 @@ const getServices = function () {
 }; // end getServices
 
 getServices();
+
+var service_id = $('#services-dropdown').val();
+var service_id = $('#services-dropdown').val();
+console.log("selected item is: ",);
 
 //===================== GET SERVICES =============================
 
