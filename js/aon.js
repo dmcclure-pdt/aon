@@ -194,19 +194,34 @@ $('#services-dropdown').change(function() {
     console.log("the selected service is: ", serviceName);
     console.log("the selected service ID: ", serviceID);
 
+    // // get incident title value
+    // var incTitle = $("#inctitle").val();
+    // console.log("The incident title is: ",incTitle);
+
+    // // get incident title details
+    // var incDetails = $("#incdetail").val();
+    // console.log("The incident details are: ",incDetails);
+});
+
+$('#inctitle').change(function() {
     // get incident title value
     var incTitle = $("#inctitle").val();
-    console.log("The incident title is: ",incTitle);
+    console.log("The incident title is: ",incTitle);    
+});
 
+$('#incdetail').change(function() {
     // get incident title details
     var incDetails = $("#incdetail").val();
     console.log("The incident details are: ",incDetails);
 });
 
+if ($("#useOutageTitle").prop("checked", true )) {
+    console.log("Copy Inc Title to Status Message Title!")
+};
 
-// $('#services-dropdown').onchange = function(){
-//     return $(this).find("option:selected").val();
-// };
+if ($("#useOutageDetails").prop("checked", true )) {
+    console.log("Copy Inc Details to Status Message Details!")
+};
 
 
 
