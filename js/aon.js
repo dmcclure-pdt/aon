@@ -194,8 +194,8 @@ const getStakeholders = function () {
     let shDefaultOption = document.createElement('option');
     shDefaultOption.text = 'Choose Stakeholders';
     
-    stakeholderDropdown.add(shDefaultOption);
-    stakeholderDropdown.selectedIndex = 0;
+    // stakeholderDropdown.add(shDefaultOption);
+    // stakeholderDropdown.selectedIndex = 0;
 
     const PDJS = initPDJS();
 
