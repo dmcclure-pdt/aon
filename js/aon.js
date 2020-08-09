@@ -215,13 +215,25 @@ $('#incdetail').change(function() {
     console.log("The incident details are: ",incDetails);
 });
 
-if ($("#useOutageTitle").prop("checked")) {
+
+$("#useOutageTitle").change(copyTitle);
+
+function copyTitle()
+{
+   var incTitle=$("#inctitle").val();
+   if (this.checked==true)
+     $("#statustitle").val(incTitle);
+}
+
+
+
+if ($("#useOutageTitle").prop("checked",true)) {
     console.log("Copy Inc Title to Status Message Title!")
 } else {
     console.log("Enter Status Message Title!")
 };
 
-if ($("#useOutageDetails").prop("checked")) {
+if ($("#useOutageDetails").prop("checked",true)) {
     console.log("Copy Inc Details to Status Message Details!")
 } else {
     console.log("Enter Status Message Details!")
