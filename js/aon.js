@@ -193,9 +193,15 @@ $('#services-dropdown').change(function() {
 
     console.log("the selected service is: ", serviceName);
     console.log("the selected service ID: ", serviceID);
-}) = serviceID;
+});
 
-console.log("selected item is: ",service_id);
+console.log("selected item is: ",serviceID);
+
+// $('#services-dropdown').onchange = function(){
+//     return $(this).find("option:selected").val();
+// };
+
+
 
 //===================== GET SERVICES =============================
 
