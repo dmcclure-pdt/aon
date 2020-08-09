@@ -131,6 +131,7 @@ getServices();
 //===================== GET SERVICES =============================
 
 const getServices = function () {
+    console.log("I'm in getServices now....");
 
     PDJS.api_all({
         res: "services",
