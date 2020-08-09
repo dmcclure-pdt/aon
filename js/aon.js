@@ -195,11 +195,12 @@ $('#services-dropdown').change(function() {
     console.log("the selected service ID: ", serviceID);
 
     // get incident title value
-    var incTitle = $(this).inctitle.val();
+    var incTitle = $(this).getElementById("inctitle").value;
     console.log("The incident title is: ",incTitle);
 
+
     // get incident title details
-    var incDetails = $(this).incdetail.val();
+    var incDetails = $(this).getElementById("incdetail").value;
     console.log("The incident details are: ",incDetails);
 });
 
