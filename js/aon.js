@@ -166,11 +166,11 @@ const getServices = function () {
             // document.getElementById("services-list").innerHTML = serviceHTML;
 
             for (let i = 0; i < services.length; i++) {
-                console.log("Services data is: " + JSON.stringify(services[i].name));
+                //console.log("Services data is: " + JSON.stringify(services[i].name));
                 option = document.createElement('option');
                 option.text = services[i].name;
                 option.value = services[i].id;
-                console.log("the option is: " + option.text + " : " + option.value);
+                //console.log("the option is: " + option.text + " : " + option.value);
                 dropdown.add(option);
             }
 
@@ -195,12 +195,11 @@ $('#services-dropdown').change(function() {
     console.log("the selected service ID: ", serviceID);
 
     // get incident title value
-    var incTitle = $(this).getElementById("inctitle").value;
+    var incTitle = $("#inctitle").val();
     console.log("The incident title is: ",incTitle);
 
-
     // get incident title details
-    var incDetails = $(this).getElementById("incdetail").value;
+    var incDetails = $("#incdetail").val();
     console.log("The incident details are: ",incDetails);
 });
 
