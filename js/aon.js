@@ -119,9 +119,6 @@ const loadPage = function() {
                 showTab("index");
             }
         });
-
-getServices();
-
     } else {        
         showTab("auth");
         authCheckingPoll();
@@ -129,6 +126,8 @@ getServices();
 }
 // initialize page
 loadPage();
+
+getServices();
 
 //================== AON FORM ===================
 
@@ -144,7 +143,7 @@ document.getElementById('aon-input').onchange = function() {
 };
 
 const getServices = function () {
-
+    console.log("i'm in getServices....");
     PDJS.api_all({
         res: "services",
         data: {
@@ -177,7 +176,6 @@ const getServices = function () {
                         </div>
                     </div>
                 </div>`;
-                showTab("services");
             }
     });
 }; // end getServices
