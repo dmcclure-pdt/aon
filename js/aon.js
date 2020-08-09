@@ -131,6 +131,7 @@ loadPage();
 
 const getServices = function () {
     console.log("I'm in getServices now....");
+    const PDJS = initPDJS();
 
     PDJS.api_all({
         res: "services",
