@@ -193,9 +193,16 @@ $('#services-dropdown').change(function() {
 
     console.log("the selected service is: ", serviceName);
     console.log("the selected service ID: ", serviceID);
+
+    // get incident title value
+    var incTitle = $(this).inctitle.val();
+    console.log("The incident title is: ",incTitle);
+
+    // get incident title details
+    var incDetails = $(this).incdetail.val();
+    console.log("The incident details are: ",incDetails);
 });
 
-console.log("selected item is: ",serviceID);
 
 // $('#services-dropdown').onchange = function(){
 //     return $(this).find("option:selected").val();
