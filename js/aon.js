@@ -5,6 +5,7 @@ const navMap = {
     "users-export-button": "users-export",
     "users-import-button": "users-import",
     "users-edit-button": "users-edit",
+    "aon-form-button": "aon-form",
     // "incidents-button": "incidents",
     // "trigger-button": "trigger"
     "auth-button": "auth"
@@ -127,7 +128,7 @@ const loadPage = function() {
 // initialize page
 loadPage();
 
-getServices();
+//getServices();
 
 //================== AON FORM ===================
 
