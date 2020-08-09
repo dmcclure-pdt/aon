@@ -126,7 +126,6 @@ const loadPage = function() {
 }
 // initialize page
 loadPage();
-getServices();
 
 //===================== GET SERVICES =============================
 
@@ -164,6 +163,8 @@ const getServices = function () {
             }
     });
 }; // end getServices
+
+getServices();
 
 //===================== GET SERVICES =============================
 
