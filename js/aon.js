@@ -146,20 +146,14 @@ const getServices = function () {
             console.log("Got all the data!");
             let services = data.services;
             console.log("Services data is: " + services);
-            document.getElementById("services-list").innerHTML = `
-                <div id="user-wrapper">
-                    <div id="pic">
-                        <img src="${data.name}" />
-                    </div>
-                    <div id="bio">
-                        <div class="bio-item">
-                            Name: ${data.id}
-                        </div>
-                        <div class="bio-item">
-                            Email: ${data.description}
-                        </div>
-                    </div>
-                </div>`;
+
+            let serviceHTML = `<ul class="list-group">`;
+            services.map(service => {
+                serviceHTML += `<li class="list-group-item"><label for="${service.id}">${service.name}</label></li>
+                `;
+            });
+            serviceHTML += "</ul>"
+            document.getElementById("services-list").innerHTML = serviceHTML;
              //   showTab("index");
             }
     });
