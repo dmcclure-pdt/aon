@@ -5,7 +5,7 @@ const navMap = {
     "users-export-button": "users-export",
     "users-import-button": "users-import",
     "users-edit-button": "users-edit",
-    "aon-form-button": "aon-form",
+    //"aon-form-button": "aon-form",
     // "incidents-button": "incidents",
     // "trigger-button": "trigger"
     "auth-button": "auth"
@@ -132,54 +132,54 @@ loadPage();
 
 //================== AON FORM ===================
 
-document.getElementById('aon-input').onchange = function() {
+// document.getElementById('aon-input').onchange = function() {
     
-// create PDJS call for services
-// map into UI drop down element
-// capture selected item
-// map to test POST for incident
+// // create PDJS call for services
+// // map into UI drop down element
+// // capture selected item
+// // map to test POST for incident
     
 
 
-};
+// };
 
-const getServices = function () {
-    console.log("i'm in getServices....");
-    PDJS.api_all({
-        res: "services",
-        data: {
-            limit: 100,
-            total: true
-        },
-        incremental_success: function(data) {
-            console.log("Got data, more to get....");
-            //console.log("offset: " + data['offset']);
-        },
-        final_success: function(data) {
-            console.log("Got all the data!");
-            //console.log(data['total'] + ' objects');
-            //console.log('data object is: ' + data);
-            //console.log("offset: " + data['offset']);
-            let services = data.services;
-            console.log("Services data is: " + services);
+// const getServices = function () {
+//     console.log("i'm in getServices....");
+//     PDJS.api_all({
+//         res: "services",
+//         data: {
+//             limit: 100,
+//             total: true
+//         },
+//         incremental_success: function(data) {
+//             console.log("Got data, more to get....");
+//             //console.log("offset: " + data['offset']);
+//         },
+//         final_success: function(data) {
+//             console.log("Got all the data!");
+//             //console.log(data['total'] + ' objects');
+//             //console.log('data object is: ' + data);
+//             //console.log("offset: " + data['offset']);
+//             let services = data.services;
+//             console.log("Services data is: " + services);
 
-            document.getElementById("services-list").innerHTML = `
-                <div id="user-wrapper">
-                    <div id="pic">
-                        <img src="${data.name}" />
-                    </div>
-                    <div id="bio">
-                        <div class="bio-item">
-                            Name: ${data.id}
-                        </div>
-                        <div class="bio-item">
-                            Email: ${data.description}
-                        </div>
-                    </div>
-                </div>`;
-            }
-    });
-}; // end getServices
+//             document.getElementById("services-list").innerHTML = `
+//                 <div id="user-wrapper">
+//                     <div id="pic">
+//                         <img src="${data.name}" />
+//                     </div>
+//                     <div id="bio">
+//                         <div class="bio-item">
+//                             Name: ${data.id}
+//                         </div>
+//                         <div class="bio-item">
+//                             Email: ${data.description}
+//                         </div>
+//                     </div>
+//                 </div>`;
+//             }
+//     });
+// }; // end getServices
 
 
 
