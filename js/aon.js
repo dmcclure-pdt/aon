@@ -119,6 +119,9 @@ const loadPage = function() {
                 showTab("index");
             }
         });
+
+getServices();
+
     } else {        
         showTab("auth");
         authCheckingPoll();
