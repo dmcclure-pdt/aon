@@ -154,7 +154,7 @@ const getServices = function () {
             });
             serviceHTML += "</ul>"
             document.getElementById("services-list").innerHTML = serviceHTML;
-             //   showTab("index");
+            showTab("index");
             }
     });
 }; // end getServices
