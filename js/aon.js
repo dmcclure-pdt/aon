@@ -131,6 +131,16 @@ loadPage();
 
 const getServices = function () {
     console.log("I'm in getServices now....");
+
+    let dropdown = document.getElementById('services-dropdown');
+    dropdown.length = 0;
+    
+    let defaultOption = document.createElement('option');
+    defaultOption.text = 'Choose Affiliate';
+    
+    dropdown.add(defaultOption);
+    dropdown.selectedIndex = 0;
+
     const PDJS = initPDJS();
 
     PDJS.api_all({
@@ -145,15 +155,28 @@ const getServices = function () {
         final_success: function(data) {
             console.log("Got all the data!");
             let services = data.services;
-            console.log("Services data is: " + services);
+            console.log("Services data is: " + JSON.stringify(services));
 
-            let serviceHTML = `<ul class="list-group">`;
-            services.map(service => {
-                serviceHTML += `<li class="list-group-item"><label for="${service.id}">${service.name}</label></li>
-                `;
-            });
-            serviceHTML += "</ul>"
-            document.getElementById("services-list").innerHTML = serviceHTML;
+            // let serviceHTML = `<ul class="list-group">`;
+            // services.map(service => {
+            //     serviceHTML += `<li class="list-group-item"><label for="${service.id}">${service.name}</label></li>
+            //     `;
+            // });
+            // serviceHTML += "</ul>"
+            // document.getElementById("services-list").innerHTML = serviceHTML;
+
+            for (let i = 0; i < services.length; i++) {
+                console.log("Services data is: " + JSON.stringify(services[i].name));
+                option = document.createElement('option');
+                option.text = services[i].name;
+                option.value = services[i].id;
+                console.log("the option is: " + option.text + " : " + option.value);
+                dropdown.add(option);
+            }
+
+
+
+
             showTab("services");
             }
     });
