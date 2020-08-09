@@ -127,6 +127,43 @@ const loadPage = function() {
 // initialize page
 loadPage();
 
+//===================== GET SERVICES 
+
+const getServices = function () {
+
+    PDJS.api_all({
+        res: "services",
+        data: {
+            limit: 100,
+            total: true
+        },
+        incremental_success: function(data) {
+            console.log("Got data, more to get....");
+        },
+        final_success: function(data) {
+            console.log("Got all the data!");
+            let services = data.services;
+            console.log("Services data is: " + services);
+            document.getElementById("services-list").innerHTML = `
+                <div id="user-wrapper">
+                    <div id="pic">
+                        <img src="${data.name}" />
+                    </div>
+                    <div id="bio">
+                        <div class="bio-item">
+                            Name: ${data.id}
+                        </div>
+                        <div class="bio-item">
+                            Email: ${data.description}
+                        </div>
+                    </div>
+                </div>`;
+             //   showTab("index");
+            }
+    });
+}; // end getServices
+
+//=====================
 
 
 /**********************
