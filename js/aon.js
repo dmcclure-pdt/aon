@@ -183,6 +183,7 @@ const getServices = function () {
 }; // end getServices
 
 getServices();
+getStakeholders();
 
 // var service_id = $('#services-dropdown').val();
 // console.log("selected item is: ",service_id);
@@ -237,6 +238,48 @@ function copyDetails()
 
 
 //===================== GET SERVICES =============================
+
+//===================== GET STAKEHOLDERS =========================
+const getStakeholders = function () {
+    console.log("I'm in getStakeholders now....");
+
+    let dropdown = document.getElementById('users-dropdown');
+    dropdown.length = 0;
+    
+    let defaultOption = document.createElement('option');
+    defaultOption.text = 'Choose Stakeholders';
+    
+    dropdown.add(defaultOption);
+    dropdown.selectedIndex = 0;
+
+    const PDJS = initPDJS();
+
+    PDJS.api_all({
+        res: "users",
+        data: {
+            "total": true,
+            "limit": 100
+        },
+        incremental_success: function(data) {
+            console.log("Got data, more to get....");
+        },
+        final_success: function(data) {
+            console.log("Got all the data!");
+            let users = data.users;
+
+            for (let i = 0; i < users.length; i++) {
+                //console.log("Users data is: " + JSON.stringify(users[i].name));
+                option = document.createElement('option');
+                option.text = users[i].name;
+                option.value = users[i].id;
+                //console.log("the option is: " + option.text + " : " + option.value);
+                dropdown.add(option);
+            }
+        }
+    });
+}
+
+
 
 
 /**********************
