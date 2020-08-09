@@ -176,10 +176,7 @@ const getServices = function () {
                 </div>`;
                 showTab("services");
             }
-            
-        }
-
-    })
+    });
 }; // end getServices
 
 
