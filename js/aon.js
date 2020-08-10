@@ -91,34 +91,34 @@ const loadPage = function() {
         const PDJS = initPDJS();
         initLogoutButton();
 
-        // // Get Current User
-        // PDJS.api({
-        //     res: `users/me`,
-        //     type: `GET`,
-        //     success: function(data) {
-        //         document.getElementById("welcome").innerHTML = `
-        //         <div id="user-wrapper">
-        //             <div id="pic">
-        //                 <img src="${data.user.avatar_url}" />
-        //             </div>
-        //             <div id="bio">
-        //                 <div class="bio-item">
-        //                     Name: ${data.user.name}
-        //                 </div>
-        //                 <div class="bio-item">
-        //                     Email: ${data.user.email}
-        //                 </div>
-        //                 <div class="bio-item">
-        //                     Role: ${data.user.role}
-        //                 </div>
-        //                 <div class="bio-item">
-        //                     Time Zone: ${data.user.time_zone}
-        //                 </div>
-        //             </div>
-        //         </div>`;
-        //         showTab("index");
-        //     }
-        // });
+        // Get Current User
+        PDJS.api({
+            res: `users/me`,
+            type: `GET`,
+            success: function(data) {
+                document.getElementById("welcome").innerHTML = `
+                <div id="user-wrapper">
+                    <div id="pic">
+                        <img src="${data.user.avatar_url}" />
+                    </div>
+                    <div id="bio">
+                        <div class="bio-item">
+                            Name: ${data.user.name}
+                        </div>
+                        <div class="bio-item">
+                            Email: ${data.user.email}
+                        </div>
+                        <div class="bio-item">
+                            Role: ${data.user.role}
+                        </div>
+                        <div class="bio-item">
+                            Time Zone: ${data.user.time_zone}
+                        </div>
+                    </div>
+                </div>`;
+                showTab("index");
+            }
+        });
     } else {        
         showTab("auth");
         authCheckingPoll();
@@ -188,14 +188,14 @@ const getServices = function () {
 const getStakeholders = function () {
     console.log("I'm in getStakeholders now....");
 
-    let stakeholderDropdown = document.getElementById('users-dropdown');
-    stakeholderDropdown.length = 0;
+    // let stakeholderDropdown = document.getElementById('users-dropdown');
+    // stakeholderDropdown.length = 0;
     
-    let shDefaultOption = document.createElement('option');
-    shDefaultOption.text = 'Choose Stakeholders';
+    // let shDefaultOption = document.createElement('option');
+    // shDefaultOption.text = 'Choose Stakeholders';
     
-    stakeholderDropdown.add(shDefaultOption);
-    stakeholderDropdown.selectedIndex = 0;
+    // stakeholderDropdown.add(shDefaultOption);
+    // stakeholderDropdown.selectedIndex = 0;
 
     const PDJS = initPDJS();
 
@@ -213,16 +213,16 @@ const getStakeholders = function () {
             let users = data.users;
 
             for (let i = 0; i < users.length; i++) {
-                //console.log("Users data is: " + JSON.stringify(users[i].name));
-                option = document.createElement('option');
-                option.text = users[i].name;
-                option.value = users[i].id;
-                //console.log("the option is: " + option.text + " : " + option.value);
-                stakeholderDropdown.add(option);
+                console.log("Users data is: " + JSON.stringify(users[i].name));
+                // option = document.createElement('option');
+                // option.text = users[i].name;
+                // option.value = users[i].id;
+                // //console.log("the option is: " + option.text + " : " + option.value);
+                // stakeholderDropdown.add(option);
             }
         }
     });
-};
+}
 
 //======================= END USERS =================================================
 
@@ -279,71 +279,53 @@ function copyDetails()
      $("#statusupdate").val(incDetails);
 }
 
-$('#users-dropdown').change(function() {
-    var userName = $(this).find("option:selected").text();
-    var userID = $(this).find("option:selected").val();
-
-    console.log("the selected service is: ", userName);
-    console.log("the selected service ID: ", userID);
-});
-
-
 //=================================================
 
 
+// gather data and post incident + status update shortly afterwards
 
+// //function createIncident(serviceID, serviceName, title, description) {
+//     function createIncident(serviceID) {
+//         // var email = prompt("Please enter a userEmail");
+//         // document.getElementById("res").append(`Adding contact method for user: ${email}. `);
+//         var email = getCurrentUser();
+//         console.log("the current user email is: ", email);
 
+//         PDJS.api({
+//             res: `incidents`,
+//             type: 'POST',
+//             headers: {
+//                 From: `${email}`
+//             },
+//             data: {
+//                 incident: {
+//                     type: "incident",
+//                     title: "i'm a title",
+//                     service: {
+//                         id: serviceID,
+//                         type: "service_reference"
+//                     },
+//                     priority: {
+//                         id: "P7UWA5Z",
+//                         type: "priority_reference"
+//                     },
+//                     urgency: "high",
+//                     body: {
+//                         type: "incident_body",
+//                         details: "i'm a description"
+//                     },
+//                     incident_key: serviceID + "abc123"
+//                 }
+//             },
+//             success: function(data) {
+//                 document.getElementById("res").append(`New Affiliate Outage Incident ID: ${data.incident.id}. `);
 
-const createIncident = function () {
-    const PDJS = initPDJS();
-
-
-
-//function createIncident(serviceID, serviceName, title, description) {
-    function createIncident(serviceID) {
-        // var email = prompt("Please enter a userEmail");
-        // document.getElementById("res").append(`Adding contact method for user: ${email}. `);
-        var email = getCurrentUser();
-        console.log("the current user email is: ", email);
-
-        PDJS.api({
-            res: `incidents`,
-            type: 'POST',
-            headers: {
-                From: `${email}`
-            },
-            data: {
-                incident: {
-                    type: "incident",
-                    title: "i'm a title",
-                    service: {
-                        id: serviceID,
-                        type: "service_reference"
-                    },
-                    priority: {
-                        id: "P7UWA5Z",
-                        type: "priority_reference"
-                    },
-                    urgency: "high",
-                    body: {
-                        type: "incident_body",
-                        details: "i'm a description"
-                    },
-                    incident_key: serviceID + "abc123"
-                }
-            },
-            success: function(data) {
-                var incident = data.incident;
-                console.log("incident created: ",incident);
-            },
-            error: function(data) {
-                console.log(`ERROR Creating Incident: ${data.error.errors.join()}`);
-            }
-        })
-    };
-
-}
-
+//             },
+//             error: function(data) {
+//                 console.log(`ERROR ADDING CONTACT METHOD: ${data.error.errors.join()}`);
+//             }
+//         })
+//     };
 
 
 
