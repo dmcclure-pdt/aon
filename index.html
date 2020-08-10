@@ -4,7 +4,7 @@
 	    <meta charset="utf-8">
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>PagerDuty User Management Tool</title>
+		<title>AON Portal</title>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.css" rel="stylesheet">
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
 		<link href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" rel="stylesheet">
@@ -15,7 +15,7 @@
 		<link href="css/PDtool.css" rel="stylesheet">
 	</head>
 	<body>
-	    <nav class="navbar navbar-default navbar-fixed-top">
+	     <!-- <nav class="navbar navbar-default navbar-fixed-top">
 	      <div class="container-fluid">
 	        <div class="navbar-header">
 	          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -24,7 +24,7 @@
 	            <span class="icon-bar"></span>
 	            <span class="icon-bar"></span>
 	          </button>
-	          <a class="navbar-brand" href="#">PD Bulk User Management Tool</a>
+	          <a class="navbar-brand" href="#">AON Portal</a>
 	        </div>
 	
 	        <div id="navbar" class="navbar-collapse collapse">
@@ -45,8 +45,8 @@
 	          <ul class="nav navbar-nav navbar-right">
 	          </ul>
 	        </div><!--/.nav-collapse -->
-	      </div>
-	    </nav>
+	      <!-- </div>
+	    </nav> -->
 
 		<div id="content" class="container-fluid">
 			<div class="detail" id="auth">
@@ -58,9 +58,101 @@
 				</div>
 			</div>
 			<div class="detail" id="index">
-				<h2>Welcome!</h2>
+				<!-- <h2>Welcome!</h2> -->
 				<p id="welcome"></p>
 			</div>
+			<!-- ====== services ====== -->
+			<div class="detail" id="services">
+				<!-- <img src ="https://upload.wikimedia.org/wikipedia/commons/2/25/FOX_wordmark.svg" style="width:65px;height:150px;"><p>Create Affiliate Outage and Notify Stakeholders</p> -->
+				<!-- <img src ="https://upload.wikimedia.org/wikipedia/commons/2/25/FOX_wordmark.svg" width="65" height="150">
+				<h3>Create Affiliate Outage and Notify Stakeholders</h3> -->
+				<!-- <p id="services-list"></p> -->
+				<form class="form-horizontal">
+                    <fieldset>
+                        <!-- Select Basic -->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="incsvc">Affiliate Impacted</label>
+                            <div class="col-md-8">
+                                <select id="services-dropdown" name="incsvc" class="form-control"></select>
+                            </div>
+                        </div>
+
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="inctitle">Outage Summary</label>
+                            <div class="col-md-8">
+                                <input id="inctitle" name="inctitle" type="text" class="form-control input-md" placeholder="Enter outage summary" required>
+                            </div>
+                        </div>
+
+                        <!-- Textarea -->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="incdetail">Outage Details</label>
+                            <div class="col-md-4">
+                                <textarea class="form-control" id="incdetail" name="incdetail" required placeholder="Enter outage details"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Add a button to click to use the same message as Outage Detail for Stakeholder message. -->
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="useOutageTitle" id="useOutageTitle" value="">
+                            <label class="form-check-label" for="useOutageTitle">Use Outage Summary as Stakeholder Message Summary?</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="useOutageDetails" id="useOutageDetails" value="">
+                            <label class="form-check-label" for="useOutageDetails">Use Outage Details as Stakeholder Message Details?</label>
+                        </div>
+
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="statustitle">Stakeholder Message Title</label>
+                            <div class="col-md-8">
+                                <input id="statustitle" name="statustitle" type="text" class="form-control input-md" required placeholder="Enter a message title for executive stakeholders">
+                            </div>
+                        </div>
+
+                        <!-- Textarea -->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="statusupdate">Stakeholder Message</label>
+                            <div class="col-md-4">
+                                <textarea class="form-control" id="statusupdate" name="statusupdate" required placeholder="Enter a message for executive stakeholders"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Select Multiple -->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="stakeholders">Stakeholders</label>
+                            <div class="col-md-6">
+                                <select id="users-dropdown" name="stakeholders" class="form-control" multiple="multiple" required></select>
+                            </div>
+						</div>
+
+                        <!-- Button -->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="createIncident">Create Outage and Notify Stakeholders</label>
+                            <div class="col-md-4">
+                                <button id="createIncident" name="createIncident" class="btn btn-success">Submit</button>
+
+                            </div>
+                        </div>
+                        <div id="res"></div>
+
+                    </fieldset>
+                </form>
+
+			</div>
+
+			
+
+
+
+
+
+
+
+
+			<!-- ====== services ====== -->
+
 			<div class="detail" id="integrations">
 				<h2>View Integrations</h2>
 				Service: <select class="selectpicker" id="integrations-service-select"></select>
@@ -156,6 +248,7 @@
 		<script src="js/pdjs.js"></script>
 		<script src="js/config.js"></script>
 		<script src="js/auth.js"></script>
-		<script src="js/pagerduty-bulk-user-mgr.js"></script>
+		<!-- <script src="js/pagerduty-bulk-user-mgr.js"></script> -->
+		<script src="js/aon.js"></script>
 	</body>
 </html>
