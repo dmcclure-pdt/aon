@@ -33,24 +33,24 @@ const showTab = function(tabId) {
 }
 
 // function for 
-const navigateFrom = function(buttonId) {
-    showTab(navMap[buttonId]);
-}
-const buttonList = Object.keys(navMap);
+// const navigateFrom = function(buttonId) {
+//     showTab(navMap[buttonId]);
+// }
+// const buttonList = Object.keys(navMap);
     
-// setting the onclick property for each of the nav buttons
-buttonList.map(buttonId => {
-    // adding click event for nav buttons
-    document.getElementById(buttonId).onclick = function() { 
-        navigateFrom(buttonId);
-        if (buttonId === "users-export-button") {
-            populateUsersResult();
-        } else if (buttonId === "users-edit-button") {
-            populateUsersEdit();
-        }
-    };
-    // todo: add keyevent
-});
+// // setting the onclick property for each of the nav buttons
+// buttonList.map(buttonId => {
+//     // adding click event for nav buttons
+//     document.getElementById(buttonId).onclick = function() { 
+//         navigateFrom(buttonId);
+//         if (buttonId === "users-export-button") {
+//             populateUsersResult();
+//         } else if (buttonId === "users-edit-button") {
+//             populateUsersEdit();
+//         }
+//     };
+//     // todo: add keyevent
+// });
 
 const initPDJS = function() {
     const parsedToken = JSON.parse(localStorage.getItem("pd-token"));
