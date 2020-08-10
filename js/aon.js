@@ -333,7 +333,8 @@ const createIncident = function () {
                 }
             },
             success: function(data) {
-                console.log("incident created: ",${data.incident.id});
+                var incident = data.incident;
+                console.log("incident created: ",incident);
             },
             error: function(data) {
                 console.log(`ERROR Creating Incident: ${data.error.errors.join()}`);
