@@ -220,6 +220,7 @@ const getStakeholders = function () {
                 // //console.log("the option is: " + option.text + " : " + option.value);
                 // stakeholderDropdown.add(option);
             }
+            showTab("services");    
         }
     });
 }
