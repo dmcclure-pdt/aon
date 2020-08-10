@@ -333,6 +333,63 @@ function copyDetails() {
 
 // want to use the internal API for all in one subscription + message here...
 
+// for a given incident id (PYX3MCC), create subscriber and custom message 
+// https://api.pagerduty.com/incidents/PYX3MCC/status_updates/subscribe_and_send
+
+// Add Header - X-EARLY-ACCESS = advanced-status-update
+// Add Header - From:
+
+// example payload - allows for customized HTML template to be 
+// used in email notifications and control over who is added as 
+// subscriber and their specific contact channel
+// 
+// map form values into custom HTML template for email and SMS/PUSH
+
+// {
+//     "message": "Please respond: https://pagerduty.com to this message",
+//     "html_message": "<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD XHTML 1.0 Transitional\/\/EN\" \"http:\/\/www.w3.org\/TR\/xhtml1\/DTD\/xhtml1-transitional.dtd\"><html xmlns=\"http:\/\/www.w3.org\/1999\/xhtml\"><head><meta http-equiv=\"Content-Type\" content=\"text\/html; charset=UTF-8\" \/><title>Affiliate Outage Notification<\/title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"\/><\/head><body style=\"margin: 0; padding: 0;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr> <td style=\"padding: 10px 0 30px 0;\"> <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"border: 1px solid #cccccc; border-collapse: collapse;\"> <tr> <td align=\"center\" bgcolor=\"#ffffff\" style=\"padding: 40px 0 30px 0; color: #ffffff; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;\"> <img src=\"https://static-media.fox.com/foxnow/web/v3-2/img/fox_logo.jpg\" alt=\"Fox_Broadcasting_Company_logo\" width=\"561\" height=\"324\" style=\"display: block;\" \/> <\/td> <\/tr> <tr> <td bgcolor=\"#ffffff\" style=\"padding: 40px 30px 40px 30px;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr> <td style=\"color: #000000; font-family: Arial, sans-serif; font-size: 24px;\"> <b>Affiliate Outage Notification<\/b> <\/td> <\/tr> <tr> <td style=\"padding: 20px 0 30px 0; color: #000000; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;\">Status: Outage <br> Update: Restoration in progress. <br> Slack/Zoom: #outage <br> Incident Commander: Frank Smith <br><\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table><\/body><\/html>",
+//     "subject": "Affiliate Outage Notification: WAGA 5 Atlanta, GA",
+//     "recipients": [
+//         {
+//             "user": {
+//                 "id": "PYX3MCC",
+//                 "type": "user_reference"
+//             },
+//             "contact_methods": [
+//                 "sms",
+//                 "email",
+//                 "push_notification"
+//             ]
+//         },
+//         {
+//             "user": {
+//                 "id": "PF0YY90",
+//                 "type": "user_reference"
+//             },
+//             "contact_methods": [
+//                 "sms",
+//                 "email",
+//                 "push_notification"
+//             ]
+//         }
+//     ]
+// }
+
+
+
+
+
+//===============================================================
+
+
+
+
+
+
+
+
+
+
 
 /**********************
  * USER IMPORT
