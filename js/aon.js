@@ -37,7 +37,7 @@ const showTab = function(tabId) {
 //     showTab(navMap[buttonId]);
 // }
 // const buttonList = Object.keys(navMap);
-    
+
 // // setting the onclick property for each of the nav buttons
 // buttonList.map(buttonId => {
 //     // adding click event for nav buttons
@@ -53,20 +53,20 @@ const showTab = function(tabId) {
 // });
 
 const initPDJS = function() {
-    const parsedToken = JSON.parse(localStorage.getItem("pd-token"));
-    return new PDJSobj({
-        token: parsedToken.access_token,
-        tokenType: parsedToken.token_type,
-        logging: true
-    });
-}
-// pole for pd-token
+        const parsedToken = JSON.parse(localStorage.getItem("pd-token"));
+        return new PDJSobj({
+            token: parsedToken.access_token,
+            tokenType: parsedToken.token_type,
+            logging: true
+        });
+    }
+    // pole for pd-token
 const authCheckingPoll = function() {
     let checking = window.setInterval(function() {
         if (localStorage.getItem("pd-token")) {
             loadPage();
-			initLogoutButton();
-			window.history.replaceState({}, document.title, window.location.pathname);
+            initLogoutButton();
+            window.history.replaceState({}, document.title, window.location.pathname);
             clearInterval(checking);
         }
     }, 500);
@@ -77,7 +77,7 @@ const initLogoutButton = function() {
     const authButton = document.getElementById("pd-auth-button");
     authButton.innerText = "Disconnect PagerDuty";
     authButton.href = "#";
-    
+
     // logout of pagerduty
     authButton.onclick = () => {
         localStorage.removeItem('pd-token');
@@ -87,16 +87,16 @@ const initLogoutButton = function() {
 
 // if not pd-token show the auth Tab
 const loadPage = function() {
-    if (localStorage.getItem("pd-token")) {
-        const PDJS = initPDJS();
-        initLogoutButton();
+        if (localStorage.getItem("pd-token")) {
+            const PDJS = initPDJS();
+            initLogoutButton();
 
-        // Get Current User
-        PDJS.api({
-            res: `users/me`,
-            type: `GET`,
-            success: function(data) {
-                document.getElementById("welcome").innerHTML = `
+            // Get Current User
+            PDJS.api({
+                res: `users/me`,
+                type: `GET`,
+                success: function(data) {
+                    document.getElementById("welcome").innerHTML = `
                 <div id="user-wrapper">
                     <div id="pic">
                         <img src="${data.user.avatar_url}" />
@@ -116,28 +116,28 @@ const loadPage = function() {
                         </div>
                     </div>
                 </div>`;
-                showTab("index");
-            }
-        });
-    } else {        
-        showTab("auth");
-        authCheckingPoll();
+                    showTab("index");
+                }
+            });
+        } else {
+            showTab("auth");
+            authCheckingPoll();
+        }
     }
-}
-// initialize page
+    // initialize page
 loadPage();
 
 //===================== GET SERVICES =============================
 
-const getServices = function () {
+const getServices = function() {
     console.log("I'm in getServices now....");
 
     let dropdown = document.getElementById('services-dropdown');
     dropdown.length = 0;
-    
+
     let defaultOption = document.createElement('option');
     defaultOption.text = 'Choose Affiliate';
-    
+
     dropdown.add(defaultOption);
     dropdown.selectedIndex = 0;
 
@@ -178,22 +178,22 @@ const getServices = function () {
 
 
             showTab("services");
-            }
+        }
     });
 }; // end getServices
 
 //===================== GET SERVICES =============================
 
 //===================== GET STAKEHOLDERS =========================
-const getStakeholders = function () {
+const getStakeholders = function() {
     console.log("I'm in getStakeholders now....");
 
     // let stakeholderDropdown = document.getElementById('users-dropdown');
     // stakeholderDropdown.length = 0;
-    
+
     // let shDefaultOption = document.createElement('option');
     // shDefaultOption.text = 'Choose Stakeholders';
-    
+
     // stakeholderDropdown.add(shDefaultOption);
     // stakeholderDropdown.selectedIndex = 0;
 
@@ -220,12 +220,14 @@ const getStakeholders = function () {
                 // //console.log("the option is: " + option.text + " : " + option.value);
                 // stakeholderDropdown.add(option);
             }
-            showTab("services");    
+            showTab("services");
         }
     });
 }
 
 //======================= END USERS =================================================
+
+// How to get the values from the form and use in the POST for incident, and then the POST/PUT for Status Update
 
 getServices();
 getStakeholders();
@@ -252,32 +254,30 @@ $('#services-dropdown').change(function() {
 $('#inctitle').change(function() {
     // get incident title value
     var incTitle = $("#inctitle").val();
-    console.log("The incident title is: ",incTitle);    
+    console.log("The incident title is: ", incTitle);
 });
 
 $('#incdetail').change(function() {
     // get incident title details
     var incDetails = $("#incdetail").val();
-    console.log("The incident details are: ",incDetails);
+    console.log("The incident details are: ", incDetails);
 });
 
 
 $("#useOutageTitle").change(copyTitle);
 
-function copyTitle()
-{
-   var incTitle=$("#inctitle").val();
-   if (this.checked==true)
-     $("#statustitle").val(incTitle);
+function copyTitle() {
+    var incTitle = $("#inctitle").val();
+    if (this.checked == true)
+        $("#statustitle").val(incTitle);
 }
 
 $("#useOutageDetails").change(copyDetails);
 
-function copyDetails()
-{
-   var incDetails=$("#incdetail").val();
-   if (this.checked==true)
-     $("#statusupdate").val(incDetails);
+function copyDetails() {
+    var incDetails = $("#incdetail").val();
+    if (this.checked == true)
+        $("#statusupdate").val(incDetails);
 }
 
 //=================================================
@@ -328,6 +328,10 @@ function copyDetails()
 //         })
 //     };
 
+// once the incident is created and we have an incident ID, we can add the stakeholders and status message
+// options: run a response play, add users/teams as incident subscribers, add status update
+
+// want to use the internal API for all in one subscription + message here...
 
 
 /**********************
@@ -335,24 +339,24 @@ function copyDetails()
  **********************/
 // User Import API Call
 const addUsers = function(userList) {
-	document.getElementById("busy").style.display = "block";
+    document.getElementById("busy").style.display = "block";
     let outstanding = 0;
     const PDJS = initPDJS();
 
-	userList.map((user) => {
+    userList.map((user) => {
         outstanding++;
         user.type = "user";
 
-		for ( let key in user ) {
-			if ( user[key] === null || user[key] === undefined || user[key] === "" ) {
-				delete user[key];
-			}
-		}
+        for (let key in user) {
+            if (user[key] === null || user[key] === undefined || user[key] === "") {
+                delete user[key];
+            }
+        }
 
-		const options = {
-			data: {
-				user: user
-			}
+        const options = {
+            data: {
+                user: user
+            }
         }
         PDJS.api({
             res: `users`,
@@ -360,17 +364,17 @@ const addUsers = function(userList) {
             data: options.data,
             success: function(data) {
                 outstanding--;
-				if (outstanding == 0) {
+                if (outstanding == 0) {
                     document.getElementById("busy").style.display = "none";
-				}
+                }
             }
         });
-	});
+    });
 }
 
 function isEmpty(obj) {
-    for(var key in obj) {
-        if(obj.hasOwnProperty(key))
+    for (var key in obj) {
+        if (obj.hasOwnProperty(key))
             return false;
     }
     return true;
@@ -382,7 +386,7 @@ function isEmpty(obj) {
 document.getElementById('csv-file-input').onchange = function() {
     if (!isEmpty($('#users-import-result-table'))) {
         $('#users-import-result-table').DataTable().clear().destroy();
-        $('#users-import-result-table').empty(); 
+        $('#users-import-result-table').empty();
     }
 
     Papa.parse(this.files[0], {
@@ -395,15 +399,15 @@ document.getElementById('csv-file-input').onchange = function() {
             var emailregex = '^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$';
 
             results.data.forEach(function(user) {
-                if ( !user.hasOwnProperty('email') || user.email == "" || !user.email.match(emailregex) ) {
+                if (!user.hasOwnProperty('email') || user.email == "" || !user.email.match(emailregex)) {
                     console.log('email boom');
                     return;
                 }
-                if ( !user.hasOwnProperty('name') || user.name == "" ) {
+                if (!user.hasOwnProperty('name') || user.name == "") {
                     console.log('name boom');
                     return;
                 }
-                if ( !user.hasOwnProperty('role') || user.role == "" ) {
+                if (!user.hasOwnProperty('role') || user.role == "") {
                     console.log('role');
                     user.role = "user";
                 }
@@ -414,7 +418,7 @@ document.getElementById('csv-file-input').onchange = function() {
             }));
             // set columns
             tableColumnNames = Object.keys(users[0]);
-            tableColumnObjects = tableColumnNames.map(name => { return {data: name, title: userTableColumnsMap[name]}; } );
+            tableColumnObjects = tableColumnNames.map(name => { return { data: name, title: userTableColumnsMap[name] }; });
 
             $('#users-import-result-table').DataTable({
                 data: users,
@@ -433,71 +437,71 @@ document.getElementById('csv-file-input').onchange = function() {
  * USER EXPORT
  **********************/
 const processUsers = function(users) {
-	let tableData = [];
-	users.forEach(function(user) {
-		let methods = {
-			phone: [],
-			email: [],
-			sms: [],
-			push: []
-		}
-		
-		user.contact_methods.forEach(function(method) {
-			switch (method.type) {
-				case "email_contact_method":
-					methods.email.push(method.address);
-					break;
-				case "phone_contact_method":
-					methods.phone.push(method.address);
-					break;
-				case "push_notification_contact_method":
-					methods.push.push(method.address);
-					break;
-				case "sms_contact_method":
-					methods.sms.push(method.address);
-					break;
-			}
-		});
-		
-		let teams = [];
-		user.teams.forEach(function(team) {
-			teams.push(team.summary);
-		});
-		
-		tableData.push(
-			[
-				user.id,
-				user.name,
-				user.email,
-				user.job_title,
-				user.role,
-				teams.join(),
-				methods.email.join(),
-				methods.phone.join(),
-				methods.sms.join()
-			]
-		);
-	});
+    let tableData = [];
+    users.forEach(function(user) {
+        let methods = {
+            phone: [],
+            email: [],
+            sms: [],
+            push: []
+        }
 
-	$('#users-export-result-table').DataTable({
-		data: tableData,
-		columns: [
-			{ title: "PD User ID" },
-			{ title: "User Name" },
-			{ title: "Login"},
-			{ title: "Title"},
-			{ title: "PD Role"},
-			{ title: "Teams"},
-			{ title: "Contact email" },
-			{ title: "Contact phone" },
-			{ title: "Contact sms" },
-		],
-		dom: 'Bfrtip',
-		buttons: [
-			'copy', 'csv', 'excel', 'pdf', 'print'
-		]
-	});
-	$('#busy').hide();
+        user.contact_methods.forEach(function(method) {
+            switch (method.type) {
+                case "email_contact_method":
+                    methods.email.push(method.address);
+                    break;
+                case "phone_contact_method":
+                    methods.phone.push(method.address);
+                    break;
+                case "push_notification_contact_method":
+                    methods.push.push(method.address);
+                    break;
+                case "sms_contact_method":
+                    methods.sms.push(method.address);
+                    break;
+            }
+        });
+
+        let teams = [];
+        user.teams.forEach(function(team) {
+            teams.push(team.summary);
+        });
+
+        tableData.push(
+            [
+                user.id,
+                user.name,
+                user.email,
+                user.job_title,
+                user.role,
+                teams.join(),
+                methods.email.join(),
+                methods.phone.join(),
+                methods.sms.join()
+            ]
+        );
+    });
+
+    $('#users-export-result-table').DataTable({
+        data: tableData,
+        columns: [
+            { title: "PD User ID" },
+            { title: "User Name" },
+            { title: "Login" },
+            { title: "Title" },
+            { title: "PD Role" },
+            { title: "Teams" },
+            { title: "Contact email" },
+            { title: "Contact phone" },
+            { title: "Contact sms" },
+        ],
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    });
+    $('#busy').hide();
 }
 
 const populateUsersResult = function() {
@@ -516,10 +520,10 @@ const populateUsersResult = function() {
     PDJS.api_all({
         res: "users",
         data: {
-        "include[]":["contact_methods"]
+            "include[]": ["contact_methods"]
         },
         incremental_success: function(data) {
-        	document.getElementById("busy").style.display = "block";
+            document.getElementById("busy").style.display = "block";
         },
         final_success: function(data) {
             processUsers(data.users);
@@ -531,178 +535,183 @@ const populateUsersResult = function() {
  * USER EDIT RESULT
  **********************/
 function modifyUser(userId, field, value) {
-	const PDJS = initPDJS();
-	let options = {
-		data: {
-			user: {}
-		}
-	};
-	options.data.user[field] = value;
-	
-	PDJS.api({
-		res: `users/${userId}`,
-		type: 'PUT',
-		data: options.data,
-		success: function (data) {
-
-		},
-		error: function (data) {
-			alert("Failed to edit " + field + ": " + data.responseJSON.error.message + "\n\n" + data.responseJSON.error.errors.join("\n"));
-			populateUsersEdit();
-		}
-	  });
-}
-
-
-function processUsersEdit(tableData, data) {
-	const PDJS = initPDJS();
-
-	data.users.forEach(function(user) {
-		var methods = {
-			phone: [],
-			email: [],
-			sms: [],
-			push: []
-		}
-		
-		user.contact_methods.forEach(function(method) {
-			switch (method.type) {
-				case "email_contact_method":
-					methods.email.push(method.address);
-					break;
-				case "phone_contact_method":
-					methods.phone.push(method.address);
-					break;
-				case "push_notification_contact_method":
-					methods.push.push(method.address);
-					break;
-				case "sms_contact_method":
-					methods.sms.push(method.address);
-					break;
-			}
-		});
-		
-		var teams = [];
-		user.teams.forEach(function(team) {
-			teams.push(team.summary);
-		});
-		
-		tableData.push(
-			[
-				user.id,
-				user.name,
-				user.email,
-				user.job_title,
-				user.role,
-				user.time_zone,
-				user.color,
-				user.description
-			]
-		);
-	});
-	if ( data.more == true ) {
-		const offset = data.offset + data.limit;
-		let progress = Math.round((data.offset / data.total) * 100);
-		$('#progressbar').attr("aria-valuenow", "" + progress);
-		$('#progressbar').attr("style", "width: " + progress + "%;");
-		$('#progressbar').html("" + progress + "%");
-		
-		const options = {
-			data: {
-				"include[]": ["contact_methods"],
-				"offset": offset,
-				"total": "true"
-			},
-			success: function(data) { processUsersEdit(tableData, data); }
-		}
-	
-		PDJS.api_all({
-			res: "users",
-			method: "GET",
-			data: {
-				"include[]":["contact_methods"],
-				"total": "true",
-				"offset": offset
-			},
-			// incremental_success: function(data) {
-			// 	// document.getElementById("busy").style.display = "block";
-			// },
-			final_success: function(data) {
-				processUsersEdit(tableData, data);
-			}
-		});
-	} else {
-		$('#users-edit-result-table').DataTable({
-			data: tableData,
-			columns: [
-				{ title: "ID" },
-				{ title: "User Name" },
-				{ title: "Login"},
-				{ title: "Title"},
-				{ title: "PD Role"},
-				{ title: "Time Zone"},
-				{ title: "Color" },
-				{ title: "Description" }
-			],
-			fnDrawCallback: function() {
-				$('#users-edit-result-table').Tabledit({
-				    url: '',
-				    onAlways: function(action, serialize) {
-					    var pairs = serialize.split('&');
-					    var id = pairs[0].split('=')[1];
-					    var field = pairs[1].split('=')[0];
-					    var value = decodeURIComponent(pairs[1].split('=')[1]);
-					    modifyUser(id, field, value);
-				    },
-				    editButton: false,
-				    deleteButton: false,
-				    hideIdentifier: true,
-				    columns: {
-				        identifier: [0, 'id'],
-				        editable: [[1, 'name'], [2, 'email'], [3, 'job_title'], [4, 'role'], [5, 'time_zone'], [6, 'color'], [7, 'description']]
-				    }
-				});
-    		}
-		});
-		$('.busy').hide();
-		$('#progressbar').attr("aria-valuenow", "0");
-		$('#progressbar').attr("style", "width: 0%;");
-		$('#progressbar').html("0%");
-	}
-}
-
-function populateUsersEdit() {
-	document.getElementById("busy").style.display = "block";
-	$('#users-edit-result').html('');
-	$('#users-edit-result').append($('<table/>', {
-		id: "users-edit-result-table"
-	}));
-	
-	let tableData = [];
-	let options = {
-		data: {
-			"include[]": ["contact_methods"],
-			"total": "true"
-		},
-		success: function(data) { processUsersEdit(tableData, data); }
-	}
     const PDJS = initPDJS();
-	
-	PDJS.api_all({
-        res: "users",
+    let options = {
         data: {
-            "include[]":["contact_methods"],
-            "total": "true"
+            user: {}
+        }
+    };
+    options.data.user[field] = value;
+
+    PDJS.api({
+        res: `users/${userId}`,
+        type: 'PUT',
+        data: options.data,
+        success: function(data) {
+
         },
-        incremental_success: function(data) {
-        	document.getElementById("busy").style.display = "block";
-        },
-        final_success: function(data) {
-			processUsersEdit(tableData, data);
-			document.getElementById("busy").style.display = "none";
+        error: function(data) {
+            alert("Failed to edit " + field + ": " + data.responseJSON.error.message + "\n\n" + data.responseJSON.error.errors.join("\n"));
+            populateUsersEdit();
         }
     });
 }
 
 
+function processUsersEdit(tableData, data) {
+    const PDJS = initPDJS();
 
+    data.users.forEach(function(user) {
+        var methods = {
+            phone: [],
+            email: [],
+            sms: [],
+            push: []
+        }
+
+        user.contact_methods.forEach(function(method) {
+            switch (method.type) {
+                case "email_contact_method":
+                    methods.email.push(method.address);
+                    break;
+                case "phone_contact_method":
+                    methods.phone.push(method.address);
+                    break;
+                case "push_notification_contact_method":
+                    methods.push.push(method.address);
+                    break;
+                case "sms_contact_method":
+                    methods.sms.push(method.address);
+                    break;
+            }
+        });
+
+        var teams = [];
+        user.teams.forEach(function(team) {
+            teams.push(team.summary);
+        });
+
+        tableData.push(
+            [
+                user.id,
+                user.name,
+                user.email,
+                user.job_title,
+                user.role,
+                user.time_zone,
+                user.color,
+                user.description
+            ]
+        );
+    });
+    if (data.more == true) {
+        const offset = data.offset + data.limit;
+        let progress = Math.round((data.offset / data.total) * 100);
+        $('#progressbar').attr("aria-valuenow", "" + progress);
+        $('#progressbar').attr("style", "width: " + progress + "%;");
+        $('#progressbar').html("" + progress + "%");
+
+        const options = {
+            data: {
+                "include[]": ["contact_methods"],
+                "offset": offset,
+                "total": "true"
+            },
+            success: function(data) { processUsersEdit(tableData, data); }
+        }
+
+        PDJS.api_all({
+            res: "users",
+            method: "GET",
+            data: {
+                "include[]": ["contact_methods"],
+                "total": "true",
+                "offset": offset
+            },
+            // incremental_success: function(data) {
+            // 	// document.getElementById("busy").style.display = "block";
+            // },
+            final_success: function(data) {
+                processUsersEdit(tableData, data);
+            }
+        });
+    } else {
+        $('#users-edit-result-table').DataTable({
+            data: tableData,
+            columns: [
+                { title: "ID" },
+                { title: "User Name" },
+                { title: "Login" },
+                { title: "Title" },
+                { title: "PD Role" },
+                { title: "Time Zone" },
+                { title: "Color" },
+                { title: "Description" }
+            ],
+            fnDrawCallback: function() {
+                $('#users-edit-result-table').Tabledit({
+                    url: '',
+                    onAlways: function(action, serialize) {
+                        var pairs = serialize.split('&');
+                        var id = pairs[0].split('=')[1];
+                        var field = pairs[1].split('=')[0];
+                        var value = decodeURIComponent(pairs[1].split('=')[1]);
+                        modifyUser(id, field, value);
+                    },
+                    editButton: false,
+                    deleteButton: false,
+                    hideIdentifier: true,
+                    columns: {
+                        identifier: [0, 'id'],
+                        editable: [
+                            [1, 'name'],
+                            [2, 'email'],
+                            [3, 'job_title'],
+                            [4, 'role'],
+                            [5, 'time_zone'],
+                            [6, 'color'],
+                            [7, 'description']
+                        ]
+                    }
+                });
+            }
+        });
+        $('.busy').hide();
+        $('#progressbar').attr("aria-valuenow", "0");
+        $('#progressbar').attr("style", "width: 0%;");
+        $('#progressbar').html("0%");
+    }
+}
+
+function populateUsersEdit() {
+    document.getElementById("busy").style.display = "block";
+    $('#users-edit-result').html('');
+    $('#users-edit-result').append($('<table/>', {
+        id: "users-edit-result-table"
+    }));
+
+    let tableData = [];
+    let options = {
+        data: {
+            "include[]": ["contact_methods"],
+            "total": "true"
+        },
+        success: function(data) { processUsersEdit(tableData, data); }
+    }
+    const PDJS = initPDJS();
+
+    PDJS.api_all({
+        res: "users",
+        data: {
+            "include[]": ["contact_methods"],
+            "total": "true"
+        },
+        incremental_success: function(data) {
+            document.getElementById("busy").style.display = "block";
+        },
+        final_success: function(data) {
+            processUsersEdit(tableData, data);
+            document.getElementById("busy").style.display = "none";
+        }
+    });
+}
