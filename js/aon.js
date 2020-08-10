@@ -91,34 +91,34 @@ const loadPage = function() {
         const PDJS = initPDJS();
         initLogoutButton();
 
-        // Get Current User
-        PDJS.api({
-            res: `users/me`,
-            type: `GET`,
-            success: function(data) {
-                document.getElementById("welcome").innerHTML = `
-                <div id="user-wrapper">
-                    <div id="pic">
-                        <img src="${data.user.avatar_url}" />
-                    </div>
-                    <div id="bio">
-                        <div class="bio-item">
-                            Name: ${data.user.name}
-                        </div>
-                        <div class="bio-item">
-                            Email: ${data.user.email}
-                        </div>
-                        <div class="bio-item">
-                            Role: ${data.user.role}
-                        </div>
-                        <div class="bio-item">
-                            Time Zone: ${data.user.time_zone}
-                        </div>
-                    </div>
-                </div>`;
-                showTab("index");
-            }
-        });
+        // // Get Current User
+        // PDJS.api({
+        //     res: `users/me`,
+        //     type: `GET`,
+        //     success: function(data) {
+        //         document.getElementById("welcome").innerHTML = `
+        //         <div id="user-wrapper">
+        //             <div id="pic">
+        //                 <img src="${data.user.avatar_url}" />
+        //             </div>
+        //             <div id="bio">
+        //                 <div class="bio-item">
+        //                     Name: ${data.user.name}
+        //                 </div>
+        //                 <div class="bio-item">
+        //                     Email: ${data.user.email}
+        //                 </div>
+        //                 <div class="bio-item">
+        //                     Role: ${data.user.role}
+        //                 </div>
+        //                 <div class="bio-item">
+        //                     Time Zone: ${data.user.time_zone}
+        //                 </div>
+        //             </div>
+        //         </div>`;
+        //         showTab("index");
+        //     }
+        // });
     } else {        
         showTab("auth");
         authCheckingPoll();
