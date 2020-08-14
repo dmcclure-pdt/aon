@@ -97,5 +97,5 @@ localStorage.setItem("pd-token", (JSON.stringify(data)));
 
 When making calls to the PagerDuty API using this Access Token set the  `Authorization Header` like so `Authorization: Bearer <access_token>`. Also,the `Accept:application/vnd.pagerduty+json;version=2` header is required when using a Bearer token. This ensures that you're using version 2 of the API.
 
-# docker run --rm --volume="$PWD:/srv/jekyll" -p 4001:4001 jekyll/jekyll:4.0 jekyll serve 
+# docker run --rm --volume="$PWD:/srv/jekyll" -p 4001:4001 jekyll/jekyll:pages jekyll serve 
 # ssh -R 80:localhost:4000 ssh.localhost.run
