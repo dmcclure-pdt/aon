@@ -261,7 +261,6 @@ $('#services-dropdown').change(function() {
     console.log("the selected service is: ", serviceName);
     console.log("the selected service ID: ", serviceID);
 
-
     if (document.getElementById('services-dropdown').selectedIndex)
         document.getElementById('inctitleprefix').innerHTML=serviceName;
     else 
@@ -276,33 +275,11 @@ $('#services-dropdown').change(function() {
     // console.log("The incident details are: ",incDetails);
 });
 
-$('#inctitle').change(function() {
-    // get incident title value
-    var incTitle = $("#inctitle").val().text;
-    if (document.getElementById('inctitleprefix').innerText != '%Incident prefix%')
-        incTitle = document.getElementById('inctitleprefix').innerText + " " + $("#inctitle").val();
-    console.log("The incident title is: ", incTitle);
-});
+$('#inctitle').change(getIncidentTitle);
 
 $("#useOutageTitle").change(copyTitle);
 
-function copyTitle() {
-    var incTitle = $("#inctitle").val();
-    if (this.checked == true)
-        $("#statustitle").val(incTitle);
-    else 
-        $("#statustitle").val("");
-}
-
 $("#useOutageDetails").change(copyDetails);
-
-function copyDetails() {
-    var incDetails = $("#incdetail").val();
-    if (this.checked == true)
-        $("#statusupdate").val(incDetails);
-    else 
-        $("#statusupdate").val("");
-}
 
 $("#users-dropdown").change(function(){
     selectedUsers= [];
@@ -313,45 +290,49 @@ $("#users-dropdown").change(function(){
     });
 });
 
+function copyTitle() {
+    var incTitle = getIncidentTitle();
+    if (this.checked == true)
+        $("#statustitle").val(incTitle);
+    else 
+        $("#statustitle").val("");
+}
+
+function copyDetails() {
+    var incDetails = $("#incdetail").val();
+    if (this.checked == true)
+        $("#statusupdate").val(incDetails);
+    else 
+        $("#statusupdate").val("");
+}
+
+function getIncidentTitle(){
+    var incTitle = $("#inctitle").val().text;
+    if (document.getElementById('inctitleprefix').innerText != '%Incident prefix%')
+        incTitle = document.getElementById('inctitleprefix').innerText + " " + $("#inctitle").val();
+    return incTitle;
+}
+
+
 $('#createIncident').click(function() {
     //createIncSh($("#services-dropdown").val(),selectedUsers);
     var incTitle = $("#inctitle").val();
     if (document.getElementById('inctitleprefix').innerText != '%Incident prefix%')
         incTitle = document.getElementById('inctitleprefix').innerText + " " + $("#inctitle").val();
-    var incidentID="";
-    incidentID=createIncident($("#services-dropdown").val(), incTitle, $("#incdetail").val(), curenUseEmail);
-    /*
-    do{
-        if (incidentID!=null || incidentID!="")
-            addStakeholdersAndMessage($("#statustitle").val(), $("#statusupdate").val(), selectedUsers, incidentID);
-
-    }while(!incidentID);
-    */
+    createIncident($("#services-dropdown").val(), incTitle, $("#incdetail").val(), curenUseEmail),$("#statustitle").val(), $("#statusupdate").val(), selectedUsers;
+    //console.log("recipeientsblock: ", buildRecipientsBlock(selectedUsers));
+    //addStakeholdersAndMessage($("#statustitle").val(), $("#statusupdate").val(), selectedUsers, "PC6ASBV");
 });
+
 //=================================================
 
 
 // gather data and post incident + status update shortly afterwards
-function createIncSh(serviceID, shUsers) {
-    console.log("CI: the Service ID:", serviceID);
-    var incTitle = $("#inctitle").val();
-    if (document.getElementById('inctitleprefix').innerText != '%Incident prefix%')
-        incTitle = document.getElementById('inctitleprefix').innerText + " " + $("#inctitle").val();
-    console.log("CI: the incident title is: ", incTitle);
-    console.log("CI: the incident details are: ", $("#incdetail").val());
-    console.log("CI: shMessage Summary is: ", $("#statustitle").val());
-    console.log("CI: shMessage Update: ", $("#statusupdate").val());
-    var usersMltipleSelection = $('stakeholders option:selected');
-    console.log("CI: shMessage Update: ", $("#statusupdate").val());
-    console.log("CI: Stakeholders:  selectedUsers: ", shUsers);
-    console.log("CI: Current user email: ", curenUseEmail);
-};
 
-function createIncident(serviceID, title, description, fromemail) {
+function createIncident(serviceID, title, description, fromemail, shstitle, shsupdate, shs) {
     console.log("CI current user email is: ", fromemail);
     console.log("CI: Decription: ", description);
     console.log("CI: Decription: ", title);
-    incidentID="";
     const PDJS = initPDJS();
     PDJS.api({
         res: `incidents`,
@@ -367,27 +348,26 @@ function createIncident(serviceID, title, description, fromemail) {
                     id: serviceID,
                     type: "service_reference"
                 },
-                priority: {
-                    id: "P7UWA5Z",
-                    type: "priority_reference"
-                },
+                //priority: {
+                //    id: "P7UWA5Z",
+                //    type: "priority_reference"
+                //},
                 urgency: "high",
                 body: {
                     type: "incident_body",
                     details: description
                 },
-                incident_key: serviceID + "abc1234"
+                incident_key: serviceID + uuidv4()
             }
         },
         success: function(data) {
-            document.getElementById("res").append(`New Affiliate Outage Incident ID: ${data.incident.id}. `);
-            incidentID=data.incident.id;
+            //document.getElementById("res").append(`New Affiliate Outage Incident ID: ${data.incident.id}. `);
+            addStakeholdersAndMessage(shstitle, shsupdate, shs, data.incident.id);
         },
         error: function(data) {
             console.log(`ERROR ADDING CONTACT METHOD: ${data.error.errors.join()}`);
         }
-    })
-    return incidentID;
+    });
 };
 
 // once the incident is created and we have an incident ID, we can add the stakeholders and status message
@@ -408,64 +388,55 @@ function createIncident(serviceID, title, description, fromemail) {
 // map form values into custom HTML template for email and SMS/PUSH
 
 function addStakeholdersAndMessage(shstatustitle, shstatusupdate, stakeholders, incID) {
-    console.log("CI: shMessage Summary is: ", shstatustitle);
-    console.log("CI: shMessage Update: ", shstatusupdate);
-    console.log("CI: shMessage Update: ", stakeholders);
+    if (stakeholders.length >= 1){
+        console.log("CI: shMessage Summary is: ", shstatustitle);
+        console.log("CI: shMessage Update: ", shstatusupdate);
+        console.log("CI: shMessage Update: ", stakeholders);
 
-    const PDJS = initPDJS();
-    PDJS.api({
-        res: "incidents/"+incID+"/status_updates/subscribe_and_send",
-        type: 'POST',
-        data: {
-            message: shstatusupdate,
-            html_message: "<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD XHTML 1.0 Transitional\/\/EN\" \"http:\/\/www.w3.org\/TR\/xhtml1\/DTD\/xhtml1-transitional.dtd\"><html xmlns=\"http:\/\/www.w3.org\/1999\/xhtml\"><head><meta http-equiv=\"Content-Type\" content=\"text\/html; charset=UTF-8\" \/><title>Affiliate Outage Notification<\/title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"\/><\/head><body style=\"margin: 0; padding: 0;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr> <td style=\"padding: 10px 0 30px 0;\"> <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"border: 1px solid #cccccc; border-collapse: collapse;\"> <tr> <td align=\"center\" bgcolor=\"#ffffff\" style=\"padding: 40px 0 30px 0; color: #ffffff; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;\"> <img src=\"https://static-media.fox.com/foxnow/web/v3-2/img/fox_logo.jpg\" alt=\"Fox_Broadcasting_Company_logo\" width=\"561\" height=\"324\" style=\"display: block;\" \/> <\/td> <\/tr> <tr> <td bgcolor=\"#ffffff\" style=\"padding: 40px 30px 40px 30px;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr> <td style=\"color: #000000; font-family: Arial, sans-serif; font-size: 24px;\"> <b>Affiliate Outage Notification<\/b> <\/td> <\/tr> <tr> <td style=\"padding: 20px 0 30px 0; color: #000000; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;\">Status: Outage <br> Update: Restoration in progress. <br> Slack/Zoom: #outage <br> Incident Commander: Frank Smith <br><\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table><\/body><\/html>",
-            subject: shstatustitle,
-            recipients: [
-                {
-                    user: {
-                        id: "PYX3MCC",
-                        type: "user_reference"
-                    },
-                    contact_methods: [
-                        sms,
-                        email,
-                        push_notification
-                    ]
-                },
-                {
-                    user: {
-                        id: "PYX3MCC",
-                        type: "user_reference"
-                    },
-                    contact_methods: [
-                        sms,
-                        email,
-                        push_notification
-                    ]
-                }
-            ]
-        },
-        success: function(data) {
-            document.getElementById("res").append(`New Affiliate Outage Incident ID: ${data.incident.id}. `);
-        },
-        error: function(data) {
-            console.log(`ERROR ADDING STAKEHOLDERS & MESSAGES : ${data.error.errors.join()}`);
+        const PDJS = initPDJS();
+        var apiObj={
+            res: "incidents/"+incID+"/status_updates/subscribe_and_send",
+            type: 'POST',
+            headers: {'From': curenUseEmail, 'X-EARLY-ACCESS':'advanced-status-update', 'Content-Type':'application/json'},
+            data: {
+                message: shstatusupdate,
+                html_message: "<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD XHTML 1.0 Transitional\/\/EN\" \"http:\/\/www.w3.org\/TR\/xhtml1\/DTD\/xhtml1-transitional.dtd\"><html xmlns=\"http:\/\/www.w3.org\/1999\/xhtml\"><head><meta http-equiv=\"Content-Type\" content=\"text\/html; charset=UTF-8\" \/><title>Affiliate Outage Notification<\/title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"\/><\/head><body style=\"margin: 0; padding: 0;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr> <td style=\"padding: 10px 0 30px 0;\"> <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"border: 1px solid #cccccc; border-collapse: collapse;\"> <tr> <td align=\"center\" bgcolor=\"#ffffff\" style=\"padding: 40px 0 30px 0; color: #ffffff; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;\"> <img src=\"https://static-media.fox.com/foxnow/web/v3-2/img/fox_logo.jpg\" alt=\"Fox_Broadcasting_Company_logo\" width=\"561\" height=\"324\" style=\"display: block;\" \/> <\/td> <\/tr> <tr> <td bgcolor=\"#ffffff\" style=\"padding: 40px 30px 40px 30px;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr> <td style=\"color: #000000; font-family: Arial, sans-serif; font-size: 24px;\"> <b>Affiliate Outage Notification<\/b> <\/td> <\/tr> <tr> <td style=\"padding: 20px 0 30px 0; color: #000000; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;\">Status: Outage <br> Update: Restoration in progress. <br> Slack/Zoom: #outage <br> Incident Commander: Frank Smith <br><\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table><\/body><\/html>",
+                subject: shstatustitle,
+                recipients: []
+            },
+            success: function(data) {
+                console.log(`SUCCESS ADDING STAKEHOLDERS & MESSAGES!`);
+            },
+            error: function(data) {
+                console.log(`ERROR ADDING STAKEHOLDERS & MESSAGES : ${data.error.errors.join()}`);
+            }
         }
-    })
-   
+
+        for (i=0; i < stakeholders.length; i++){
+            apiObj.data.recipients.push(buildRecipientsBlockByUser(stakeholders[i]));
+        }
+
+        PDJS.api(apiObj);
+    }
 };
 
-
-
+function buildRecipientsBlockByUser(userID){
+    var userObj={
+            "user": {
+                "id":"",
+                "type": "user_reference"
+            },
+            "contact_methods": [
+                "sms",
+                "email",
+                "push_notification"
+            ]
+        }
+        userObj.user.id = userID;
+    return userObj;
+}
 
 //===============================================================
-
-
-
-
-
-
-
 
 
 
