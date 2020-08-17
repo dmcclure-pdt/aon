@@ -314,14 +314,13 @@ function getIncidentTitle(){
 }
 
 
-$('#createIncident').click(function() {
+$('#createIncident').click(async function() {
     //createIncSh($("#services-dropdown").val(),selectedUsers);
     var incTitle = $("#inctitle").val();
     if (document.getElementById('inctitleprefix').innerText != '%Incident prefix%')
         incTitle = document.getElementById('inctitleprefix').innerText + " " + $("#inctitle").val();
-    createIncident($("#services-dropdown").val(), incTitle, $("#incdetail").val(), curenUseEmail),$("#statustitle").val(), $("#statusupdate").val(), selectedUsers;
-    //console.log("recipeientsblock: ", buildRecipientsBlock(selectedUsers));
-    //addStakeholdersAndMessage($("#statustitle").val(), $("#statusupdate").val(), selectedUsers, "PC6ASBV");
+    createIncident($("#services-dropdown").val(), incTitle, $("#incdetail").val(), curenUseEmail, $("#statustitle").val(), $("#statusupdate").val(), selectedUsers);
+ 
 });
 
 //=================================================
@@ -329,12 +328,12 @@ $('#createIncident').click(function() {
 
 // gather data and post incident + status update shortly afterwards
 
-function createIncident(serviceID, title, description, fromemail, shstitle, shsupdate, shs) {
+async function createIncident(serviceID, title, description, fromemail,shstitle, shsupdate, shs) {
     console.log("CI current user email is: ", fromemail);
     console.log("CI: Decription: ", description);
     console.log("CI: Decription: ", title);
     const PDJS = initPDJS();
-    PDJS.api({
+    await PDJS.api({
         res: `incidents`,
         type: 'POST',
         headers: {
