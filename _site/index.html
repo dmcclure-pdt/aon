@@ -9,17 +9,14 @@
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
 		<link href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" rel="stylesheet">
 		<link href="https://cdn.datatables.net/select/1.2.1/css/select.dataTables.min.css" rel="stylesheet">
-		<!--link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"-->
-		<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.1.0/uuidv4.min.js"></script>
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 		<link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css" rel="stylesheet">
 		<link href="css/PDtool.css" rel="stylesheet">
 	</head>
 	<body>
-		<!--
-	    <nav class="navbar navbar-default navbar-fixed-top">
-	      <div class="container-fluid"> 
+	     <!-- <nav class="navbar navbar-default navbar-fixed-top">
+	      <div class="container-fluid">
 	        <div class="navbar-header">
 	          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
 	            <span class="sr-only">Toggle navigation</span>
@@ -47,20 +44,11 @@
 	          </ul>
 	          <ul class="nav navbar-nav navbar-right">
 	          </ul>
-	        </div>
-	      </div>
-		</nav>
-	-->
-
-	<nav class="navbar navbar-light bg-light">
-		<a class="navbar-brand" href="#">
-			<img src="/img/FOX-01.svg" width="100" class="d-inline-block align-top" alt="" loading="lazy">
-		</a>
-  	</nav>
-
+	        </div><!--/.nav-collapse -->
+	      <!-- </div>
+	    </nav> -->
 
 		<div id="content" class="container-fluid">
-
 			<div class="detail" id="auth">
 				<h2 style="text-align: center;">Authentication</h2>
 				<div id="pd-auth-button-container">
@@ -70,11 +58,10 @@
 				</div>
 			</div>
 			<div class="detail" id="index">
-				<h2>Welcome!</h2>
+				<!-- <h2>Welcome!</h2> -->
 				<p id="welcome"></p>
 			</div>
 			<!-- ====== services ====== -->
-
 			<div class="detail" id="services">
 				<!-- <img src ="https://upload.wikimedia.org/wikipedia/commons/2/25/FOX_wordmark.svg" style="width:65px;height:150px;"><p>Create Affiliate Outage and Notify Stakeholders</p> -->
 				<!-- <img src ="https://upload.wikimedia.org/wikipedia/commons/2/25/FOX_wordmark.svg" width="65" height="150">
@@ -90,16 +77,13 @@
                             </div>
                         </div>
 
-						<!-- Text input-->
-						<div class="form-group"> 
-							<label class="col-md-4 control-label" for="inctitle">Outage Summary</label>
-							<div class="input-group col-md-8">
-								<div class="input-group-prepend">
-									<span class="input-group-text" id="inctitleprefix">Incident prefix</span>
-								</div>
-								<input id="inctitle" name="inctitle" type="text" class="form-control input-md" aria-describedby="inctitleprefix" placeholder="Enter outage summary" required>
-							</div>
-						</div>
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="inctitle">Outage Summary</label>
+                            <div class="col-md-8">
+                                <input id="inctitle" name="inctitle" type="text" class="form-control input-md" placeholder="Enter outage summary" required>
+                            </div>
+                        </div>
 
                         <!-- Textarea -->
                         <div class="form-group">
@@ -110,19 +94,14 @@
                         </div>
 
                         <!-- Add a button to click to use the same message as Outage Detail for Stakeholder message. -->
-                        <div class="form-group form-check">	
-							<div class="col-md-4">
-								<input type="checkbox" class="form-check-input" name="useOutageTitle" id="useOutageTitle" value="">	
-							</div>
-							<label class="col-md-4 form-check-label" for="useOutageTitle">Use Outage Summary as Stakeholder Message Summary?</label>	
-						</div>
-
-						<div class="form-group form-check">	
-							<div class="col-md-4">
-								<input type="checkbox" class="form-check-input" name="useOutageDetails" id="useOutageDetails" value="">
-							</div>
-							<label class="col-md-4 form-check-label" for="useOutageDetails">Use Outage Details as Stakeholder Message Details?</label>	
-						</div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="useOutageTitle" id="useOutageTitle" value="">
+                            <label class="form-check-label" for="useOutageTitle">Use Outage Summary as Stakeholder Message Summary?</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="useOutageDetails" id="useOutageDetails" value="">
+                            <label class="form-check-label" for="useOutageDetails">Use Outage Details as Stakeholder Message Details?</label>
+                        </div>
 
                         <!-- Text input-->
                         <div class="form-group">
@@ -144,7 +123,7 @@
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="stakeholders">Stakeholders</label>
                             <div class="col-md-6">
-                                <select multiple class="form-control" id="users-dropdown" name="stakeholders"  required></select>
+                                <select id="users-dropdown" name="stakeholders" class="form-control" multiple="multiple" required></select>
                             </div>
 						</div>
 
@@ -265,7 +244,6 @@
 		<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
 		<script src="https://cdn.datatables.net/select/1.2.1/js/dataTables.select.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.1.0/uuidv4.min.js"></script>
 		<script src="js/jquery.tabledit.js"></script>
 		<script src="js/pdjs.js"></script>
 		<script src="js/config.js"></script>
