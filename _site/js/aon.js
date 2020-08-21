@@ -362,7 +362,7 @@ function createIncident(serviceID, title, description, fromemail, shstitle, shsu
             //document.getElementById("res").append(`New Affiliate Outage Incident ID: ${data.incident.id}. `);
             //incidentID=data.incident.id;
             addStakeholdersAndMessage(fromemail, shstitle, shsupdate, shs, data.incident.id);
-            loadPage();
+           loadPage();
         },
         error: function(data) {
             console.log(`ERROR ADDING CONTACT METHOD: ${data.error.errors.join()}`);
@@ -399,8 +399,7 @@ function addStakeholdersAndMessage(fromemail, shstatustitle, shstatusupdate, sta
             res: "incidents/"+incID+"/status_updates/subscribe_and_send",
             type: 'POST',
             headers: {
-                From: `${fromemail}`, 
-                'X-EARLY-ACCESS': `advanced-status-update`
+                From: `${fromemail}`,
             },
             data: {
                 message: shstatusupdate,
@@ -416,7 +415,7 @@ function addStakeholdersAndMessage(fromemail, shstatustitle, shstatusupdate, sta
                 console.log(`ERROR ADDING STAKEHOLDERS & MESSAGES : ${data.error.errors.join()}`);
             }
         }
-
+        apiObj.headers['X-EARLY-ACCESS']= 'advanced-status-update';
         for (i=0; i < stakeholders.length; i++){
             apiObj.data.recipients.push(buildRecipientsBlockByUser(stakeholders[i]));
         }

@@ -9,7 +9,9 @@
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
 		<link href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" rel="stylesheet">
 		<link href="https://cdn.datatables.net/select/1.2.1/css/select.dataTables.min.css" rel="stylesheet">
-		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+		<!--link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"-->
+		<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.1.0/uuidv4.min.js"></script>
 		<link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css" rel="stylesheet">
 		<link href="css/PDtool.css" rel="stylesheet">
@@ -46,7 +48,13 @@
 	          </ul>
 	        </div><!--/.nav-collapse -->
 	      <!-- </div>
-	    </nav> -->
+		</nav> -->
+		
+		<nav class="navbar navbar-light bg-light">
+			<a class="navbar-brand" href="#">
+				<img src="/img/FOX-01.svg" width="100" class="d-inline-block align-top" alt="" loading="lazy">
+			</a>
+		</nav>
 
 		<div id="content" class="container-fluid">
 			<div class="detail" id="auth">
@@ -77,13 +85,16 @@
                             </div>
                         </div>
 
-                        <!-- Text input-->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="inctitle">Outage Summary</label>
-                            <div class="col-md-8">
-                                <input id="inctitle" name="inctitle" type="text" class="form-control input-md" placeholder="Enter outage summary" required>
-                            </div>
-                        </div>
+						<!-- Text input-->
+						<div class="form-group"> 
+							<label class="col-md-4 control-label" for="inctitle">Outage Summary</label>
+							<div class="input-group col-md-8">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="inctitleprefix">Incident prefix</span>
+								</div>
+								<input id="inctitle" name="inctitle" type="text" class="form-control input-md" aria-describedby="inctitleprefix" placeholder="Enter outage summary" required>
+							</div>
+						</div>
 
                         <!-- Textarea -->
                         <div class="form-group">
@@ -131,7 +142,7 @@
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="createIncident">Create Outage and Notify Stakeholders</label>
                             <div class="col-md-4">
-                                <button id="createIncident" name="createIncident" class="btn btn-success">Submit</button>
+                                <button id="createIncident" name="createIncident" class="btn btn-success" type="button">Submit</button>
 
                             </div>
                         </div>
