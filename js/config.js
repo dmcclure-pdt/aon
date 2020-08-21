@@ -1,5 +1,6 @@
 const APP_CONFIG = {
-    redirectUrl: `https://cbalan-pd.github.io/aon/`,
-    //redirectUrl: `https://cbalan-f9e06852.localhost.run/`,
-    clientId: `2778b467995a8ad5224b08e0d2cdf8b9eff6e207faed5469019193da0ceb462f`
+    //redirectUrl: `https://cbalan-pd.github.io/aon/`,
+    //redirectUrl: `https://cbalan-ffb4e23d.localhost.run/`,
+    redirectUrl: `https://dmcclure-pdt.github.io/aon/`,
+    clientId: `298d19b7da43294ca19decd3504dc8ca91369fde80c905ecb613097a829b2a39`
 };
