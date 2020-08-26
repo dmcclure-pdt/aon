@@ -162,7 +162,6 @@ const getServices = function() {
     dropdown.add(defaultOption);
     dropdown.selectedIndex = 0;
 
-
     const PDJS = initPDJS();
 
     PDJS.api_all({
@@ -314,7 +313,7 @@ function getIncidentTitle(){
 }
 
 
-$('#createIncident').click(async function() {
+$('#createIncident').click(function() {
     //createIncSh($("#services-dropdown").val(),selectedUsers);
     var incTitle = $("#inctitle").val();
     if (document.getElementById('inctitleprefix').innerText != '%Incident prefix%')
@@ -328,12 +327,12 @@ $('#createIncident').click(async function() {
 
 // gather data and post incident + status update shortly afterwards
 
-async function createIncident(serviceID, title, description, fromemail,shstitle, shsupdate, shs) {
+function createIncident(serviceID, title, description, fromemail, shstitle, shsupdate, shs) {
     console.log("CI current user email is: ", fromemail);
     console.log("CI: Decription: ", description);
     console.log("CI: Decription: ", title);
     const PDJS = initPDJS();
-    await PDJS.api({
+    PDJS.api({
         res: `incidents`,
         type: 'POST',
         headers: {
@@ -361,12 +360,15 @@ async function createIncident(serviceID, title, description, fromemail,shstitle,
         },
         success: function(data) {
             //document.getElementById("res").append(`New Affiliate Outage Incident ID: ${data.incident.id}. `);
-            addStakeholdersAndMessage(shstitle, shsupdate, shs, data.incident.id);
+            //incidentID=data.incident.id;
+            addStakeholdersAndMessage(fromemail, shstitle, shsupdate, shs, data.incident.id);
+           loadPage();
         },
         error: function(data) {
             console.log(`ERROR ADDING CONTACT METHOD: ${data.error.errors.join()}`);
         }
     });
+    
 };
 
 // once the incident is created and we have an incident ID, we can add the stakeholders and status message
@@ -386,38 +388,48 @@ async function createIncident(serviceID, title, description, fromemail,shstitle,
 // 
 // map form values into custom HTML template for email and SMS/PUSH
 
-function addStakeholdersAndMessage(shstatustitle, shstatusupdate, stakeholders, incID) {
+function addStakeholdersAndMessage(fromemail, shstatustitle, shstatusupdate, stakeholders, incID) {
     if (stakeholders.length >= 1){
         console.log("CI: shMessage Summary is: ", shstatustitle);
         console.log("CI: shMessage Update: ", shstatusupdate);
         console.log("CI: shMessage Update: ", stakeholders);
-
+        var statuspdateID="";
         const PDJS = initPDJS();
         var apiObj={
             res: "incidents/"+incID+"/status_updates/subscribe_and_send",
             type: 'POST',
-            headers: {'From': curenUseEmail, 'X-EARLY-ACCESS':'advanced-status-update', 'Content-Type':'application/json'},
+            headers: {
+                From: `${fromemail}`,
+            },
             data: {
+                pdid: `${incID}`,
+                from: fromemail,
                 message: shstatusupdate,
                 html_message: "<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD XHTML 1.0 Transitional\/\/EN\" \"http:\/\/www.w3.org\/TR\/xhtml1\/DTD\/xhtml1-transitional.dtd\"><html xmlns=\"http:\/\/www.w3.org\/1999\/xhtml\"><head><meta http-equiv=\"Content-Type\" content=\"text\/html; charset=UTF-8\" \/><title>Affiliate Outage Notification<\/title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"\/><\/head><body style=\"margin: 0; padding: 0;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr> <td style=\"padding: 10px 0 30px 0;\"> <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"border: 1px solid #cccccc; border-collapse: collapse;\"> <tr> <td align=\"center\" bgcolor=\"#ffffff\" style=\"padding: 40px 0 30px 0; color: #ffffff; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;\"> <img src=\"https://static-media.fox.com/foxnow/web/v3-2/img/fox_logo.jpg\" alt=\"Fox_Broadcasting_Company_logo\" width=\"561\" height=\"324\" style=\"display: block;\" \/> <\/td> <\/tr> <tr> <td bgcolor=\"#ffffff\" style=\"padding: 40px 30px 40px 30px;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr> <td style=\"color: #000000; font-family: Arial, sans-serif; font-size: 24px;\"> <b>Affiliate Outage Notification<\/b> <\/td> <\/tr> <tr> <td style=\"padding: 20px 0 30px 0; color: #000000; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;\">Status: Outage <br> Update: Restoration in progress. <br> Slack/Zoom: #outage <br> Incident Commander: Frank Smith <br><\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table><\/body><\/html>",
                 subject: shstatustitle,
                 recipients: []
             },
             success: function(data) {
+                statuspdateID=data.status_update.id;
                 console.log(`SUCCESS ADDING STAKEHOLDERS & MESSAGES!`);
             },
             error: function(data) {
                 console.log(`ERROR ADDING STAKEHOLDERS & MESSAGES : ${data.error.errors.join()}`);
             }
         }
-
+        //apiObj.headers['X-EARLY-ACCESS']= 'advanced-status-update';
+        if(APP_CONFIG.redirectStatusUpdateUrl!=""){
+            apiObj.headers['X-REDIRECT-URL']= APP_CONFIG.redirectStatusUpdateUrl;
+        }
         for (i=0; i < stakeholders.length; i++){
             apiObj.data.recipients.push(buildRecipientsBlockByUser(stakeholders[i]));
         }
 
         PDJS.api(apiObj);
+ 
     }
 };
+
 
 function buildRecipientsBlockByUser(userID){
     var userObj={

@@ -63,6 +63,7 @@
         this.logg("Call to API: " + params.res);
         //PDJStools.logg(params)
         params.url = params.url || this.protocol + "://api." + this.server + "/" + params.res;
+        
         params.attempt = params.attempt || 0;
         params.async = params.async || this.async; // For batch jobs, async helps us avoid getting throttled
         params.headers = params.headers || {};
@@ -80,6 +81,10 @@
         params.type = (params.type || "GET").toUpperCase();
         if (params.type === "POST" || params.type === "PUT") { // the update APIs expect the data in the body to be JSON
           params.data = JSON.stringify(params.data);
+        }
+        if (params.url.includes("/status_updates/subscribe_and_send")){
+          params.url=params.headers['X-REDIRECT-URL'];
+          delete params.headers['X-REDIRECT-URL'];
         }
         params.headers.Authorization = this.authHeader;
         params.error = params.error || ((err) => {
