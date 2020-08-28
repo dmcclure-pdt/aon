@@ -328,7 +328,7 @@ $('#resume').click(function (){
 
 $('#logoutOAUTH2').click(function (){
     localStorage.removeItem('pd-token');
-    location.reload();
+    location.reload(); 
 })
 
 //=================================================
