@@ -355,10 +355,10 @@ function createIncident(serviceID, title, description, fromemail, shstitle, shsu
                     id: serviceID,
                     type: "service_reference"
                 },
-                //priority: {
-                //    id: "P7UWA5Z",
-                //    type: "priority_reference"
-                //},
+                priority: {
+                   id: "P7UWA5Z",
+                   type: "priority_reference"
+                },
                 urgency: "high",
                 body: {
                     type: "incident_body",
