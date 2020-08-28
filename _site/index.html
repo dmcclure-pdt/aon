@@ -17,8 +17,9 @@
 		<link href="css/PDtool.css" rel="stylesheet">
 	</head>
 	<body>
-	     <!-- <nav class="navbar navbar-default navbar-fixed-top">
-	      <div class="container-fluid">
+		<!--
+	    <nav class="navbar navbar-default navbar-fixed-top">
+	      <div class="container-fluid"> 
 	        <div class="navbar-header">
 	          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
 	            <span class="sr-only">Toggle navigation</span>
@@ -46,17 +47,20 @@
 	          </ul>
 	          <ul class="nav navbar-nav navbar-right">
 	          </ul>
-	        </div><!--/.nav-collapse -->
-	      <!-- </div>
-		</nav> -->
-		
-		<nav class="navbar navbar-light bg-light">
-			<a class="navbar-brand" href="#">
-				<img src="/img/FOX-01.svg" width="100" class="d-inline-block align-top" alt="" loading="lazy">
-			</a>
+
+	        </div>
+	      </div>
 		</nav>
+	-->
+
+	<nav class="navbar navbar-light bg-light">
+		<a class="navbar-brand" href="#">
+			<img src="/img/FOX-01.svg" width="100" class="d-inline-block align-top" alt="" loading="lazy">
+		</a>
+  	</nav>
 
 		<div id="content" class="container-fluid">
+
 			<div class="detail" id="auth">
 				<h2 style="text-align: center;">Authentication</h2>
 				<div id="pd-auth-button-container">
@@ -66,10 +70,11 @@
 				</div>
 			</div>
 			<div class="detail" id="index">
-				<!-- <h2>Welcome!</h2> -->
+				<h2>Welcome!</h2>
 				<p id="welcome"></p>
 			</div>
 			<!-- ====== services ====== -->
+
 			<div class="detail" id="services">
 				<!-- <img src ="https://upload.wikimedia.org/wikipedia/commons/2/25/FOX_wordmark.svg" style="width:65px;height:150px;"><p>Create Affiliate Outage and Notify Stakeholders</p> -->
 				<!-- <img src ="https://upload.wikimedia.org/wikipedia/commons/2/25/FOX_wordmark.svg" width="65" height="150">
@@ -105,14 +110,19 @@
                         </div>
 
                         <!-- Add a button to click to use the same message as Outage Detail for Stakeholder message. -->
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" name="useOutageTitle" id="useOutageTitle" value="">
-                            <label class="form-check-label" for="useOutageTitle">Use Outage Summary as Stakeholder Message Summary?</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" name="useOutageDetails" id="useOutageDetails" value="">
-                            <label class="form-check-label" for="useOutageDetails">Use Outage Details as Stakeholder Message Details?</label>
-                        </div>
+                        <div class="form-group form-check">	
+							<div class="col-md-4">
+								<input type="checkbox" class="form-check-input" name="useOutageTitle" id="useOutageTitle" value="">	
+							</div>
+							<label class="col-md-4 form-check-label" for="useOutageTitle">Use Outage Summary as Stakeholder Message Summary?</label>	
+						</div>
+
+						<div class="form-group form-check">	
+							<div class="col-md-4">
+								<input type="checkbox" class="form-check-input" name="useOutageDetails" id="useOutageDetails" value="">
+							</div>
+							<label class="col-md-4 form-check-label" for="useOutageDetails">Use Outage Details as Stakeholder Message Details?</label>	
+						</div>
 
                         <!-- Text input-->
                         <div class="form-group">
@@ -134,17 +144,22 @@
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="stakeholders">Stakeholders</label>
                             <div class="col-md-6">
-                                <select id="users-dropdown" name="stakeholders" class="form-control" multiple="multiple" required></select>
+                                <select multiple class="form-control" id="users-dropdown" name="stakeholders"  required></select>
                             </div>
 						</div>
 
                         <!-- Button -->
                         <div class="form-group">
-                            <label class="col-md-4 control-label" for="createIncident">Create Outage and Notify Stakeholders</label>
-                            <div class="col-md-4">
-                                <button id="createIncident" name="createIncident" class="btn btn-success" type="button">Submit</button>
-
-                            </div>
+							<label class="col-md-8 control-label" for="createIncident">Create Outage and Notify Stakeholders</label>							
+								<div class="col-md-8">
+									<button id="createIncident" name="createIncident" class="btn btn-success" type="button">Submit</button>
+								</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-8 control-label" for="createIncident">Session Control</label>
+								<div class="col-sm-8">
+									<button id="logoutOAUTH2" name="logoutOAUTH2" class="btn btn-success">Logout</button>
+								</div>
                         </div>
                         <div id="res"></div>
 
@@ -255,6 +270,7 @@
 		<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
 		<script src="https://cdn.datatables.net/select/1.2.1/js/dataTables.select.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.1.0/uuidv4.min.js"></script>
 		<script src="js/jquery.tabledit.js"></script>
 		<script src="js/pdjs.js"></script>
 		<script src="js/config.js"></script>

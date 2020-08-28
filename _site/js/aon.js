@@ -322,6 +322,15 @@ $('#createIncident').click(function() {
  
 });
 
+$('#resume').click(function (){
+    location.reload();
+})
+
+$('#logoutOAUTH2').click(function (){
+    localStorage.removeItem('pd-token');
+    location.reload();
+})
+
 //=================================================
 
 
@@ -361,8 +370,11 @@ function createIncident(serviceID, title, description, fromemail, shstitle, shsu
         success: function(data) {
             //document.getElementById("res").append(`New Affiliate Outage Incident ID: ${data.incident.id}. `);
             //incidentID=data.incident.id;
-            addStakeholdersAndMessage(fromemail, shstitle, shsupdate, shs, data.incident.id);
-           loadPage();
+            addStakeholdersAndMessage(fromemail, shstitle, shsupdate, shs, data.incident.id, data.incident.created_at, data.incident.html_url);
+            addIncidentLink(data.incident.id,data.incident.html_url);
+            resumeAction();
+            //loadPage();
+
         },
         error: function(data) {
             console.log(`ERROR ADDING CONTACT METHOD: ${data.error.errors.join()}`);
@@ -388,7 +400,7 @@ function createIncident(serviceID, title, description, fromemail, shstitle, shsu
 // 
 // map form values into custom HTML template for email and SMS/PUSH
 
-function addStakeholdersAndMessage(fromemail, shstatustitle, shstatusupdate, stakeholders, incID) {
+function addStakeholdersAndMessage(fromemail, shstatustitle, shstatusupdate, stakeholders, incID, createdAt,htmlURL) {
     if (stakeholders.length >= 1){
         console.log("CI: shMessage Summary is: ", shstatustitle);
         console.log("CI: shMessage Update: ", shstatusupdate);
@@ -405,7 +417,8 @@ function addStakeholdersAndMessage(fromemail, shstatustitle, shstatusupdate, sta
                 pdid: `${incID}`,
                 from: fromemail,
                 message: shstatusupdate,
-                html_message: "<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD XHTML 1.0 Transitional\/\/EN\" \"http:\/\/www.w3.org\/TR\/xhtml1\/DTD\/xhtml1-transitional.dtd\"><html xmlns=\"http:\/\/www.w3.org\/1999\/xhtml\"><head><meta http-equiv=\"Content-Type\" content=\"text\/html; charset=UTF-8\" \/><title>Affiliate Outage Notification<\/title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"\/><\/head><body style=\"margin: 0; padding: 0;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr> <td style=\"padding: 10px 0 30px 0;\"> <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"border: 1px solid #cccccc; border-collapse: collapse;\"> <tr> <td align=\"center\" bgcolor=\"#ffffff\" style=\"padding: 40px 0 30px 0; color: #ffffff; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;\"> <img src=\"https://static-media.fox.com/foxnow/web/v3-2/img/fox_logo.jpg\" alt=\"Fox_Broadcasting_Company_logo\" width=\"561\" height=\"324\" style=\"display: block;\" \/> <\/td> <\/tr> <tr> <td bgcolor=\"#ffffff\" style=\"padding: 40px 30px 40px 30px;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr> <td style=\"color: #000000; font-family: Arial, sans-serif; font-size: 24px;\"> <b>Affiliate Outage Notification<\/b> <\/td> <\/tr> <tr> <td style=\"padding: 20px 0 30px 0; color: #000000; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;\">Status: Outage <br> Update: Restoration in progress. <br> Slack/Zoom: #outage <br> Incident Commander: Frank Smith <br><\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table><\/body><\/html>",
+                //html_message: "<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD XHTML 1.0 Transitional\/\/EN\" \"http:\/\/www.w3.org\/TR\/xhtml1\/DTD\/xhtml1-transitional.dtd\"><html xmlns=\"http:\/\/www.w3.org\/1999\/xhtml\"><head><meta http-equiv=\"Content-Type\" content=\"text\/html; charset=UTF-8\" \/><title id=nt>Affiliate Outage Notification<\/title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"\/><\/head><body style=\"margin: 0; padding: 0;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr> <td style=\"padding: 10px 0 30px 0;\"> <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"border: 1px solid #cccccc; border-collapse: collapse;\"> <tr> <td align=\"center\" bgcolor=\"#ffffff\" style=\"padding: 40px 0 30px 0; color: #ffffff; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;\"> <img src=\"https://static-media.fox.com/foxnow/web/v3-2/img/fox_logo.jpg\" alt=\"Fox_Broadcasting_Company_logo\" width=\"561\" height=\"324\" style=\"display: block;\" \/> <\/td> <\/tr> <tr> <td bgcolor=\"#ffffff\" style=\"padding: 40px 30px 40px 30px;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr> <td style=\"color: #000000; font-family: Arial, sans-serif; font-size: 24px;\"> <b>Affiliate Outage Notification<\/b> <\/td> <\/tr> <tr> <td style=\"padding: 20px 0 30px 0; color: #000000; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;\">Status: Outage <br> Update: Restoration in progress. <br> Slack/Zoom: #outage <br> Incident Commander: Frank Smith <br><\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table><\/body><\/html>",
+                html_message: buildStatusUpdateHTML(shstatustitle,shstatusupdate,createdAt,htmlURL),
                 subject: shstatustitle,
                 recipients: []
             },
@@ -445,6 +458,77 @@ function buildRecipientsBlockByUser(userID){
         }
         userObj.user.id = userID;
     return userObj;
+}
+
+
+function buildStatusUpdateHTML(outage_summary,outage_details,created_at,html_url){
+    return [
+        '<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD XHTML 1.0 Transitional\/\/EN\" \"http:\/\/www.w3.org\/TR\/xhtml1\/DTD\/xhtml1-transitional.dtd\"><html xmlns=\"http:\/\/www.w3.org\/1999\/xhtml\"><head><meta http-equiv=\"Content-Type\" content=\"text\/html; charset=UTF-8\" \/><title> Affiliate Outage Notification <\/title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"\/><\/head>',
+        '<body style=\"margin: 0; padding: 0;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr> <td style=\"padding: 10px 0 30px 0;\"> <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"border: 1px solid #cccccc; border-collapse: collapse;\"> <tr> <td align=\"center\" bgcolor=\"#ffffff\" style=\"padding: 40px 0 30px 0; color: #ffffff;',
+        ' font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;\">',
+        '<svg width="180" height="100" xmlns="http://www.w3.org/2000/svg">\
+            <style type="text/css">.st0{fill:#002885;}</style>\
+            <g>\
+                    <title>background</title>\
+                    <rect x="-1" y="-1" width="182" height="102" id="canvas_background" fill="none"/>\
+                </g>\
+                <g>\
+                    <title>Layer 1</title>\
+                    <g stroke="null" id="XMLID_21_">\
+                    <path stroke="null" id="XMLID_23_" class="st0" d="m171.4375,84.78619c-7.41,0 -14.95392,0 -22.27465,0c-0.22319,0 -0.5803,-0.88627 -0.66958,-1.06353c-3.08006,-5.49489 -6.11548,-10.98978 -9.19555,-16.48467c-3.25862,5.8494 -6.42795,11.78742 -9.68657,17.63682c-7.27609,0 -14.50754,-0.04431 -21.78363,0c0.80349,-1.50666 1.69627,-3.01333 2.5444,-4.51999c6.07085,-10.4137 12.09705,-21.00465 18.1679,-31.46267c-6.47259,-11.21134 -13.03446,-22.37838 -19.5517,-33.58972c0,0 -0.04464,-0.08863 0,-0.04431c7.45464,0 14.90928,0 22.36393,0c2.76759,4.96313 5.44591,10.01488 8.12422,15.02232c2.81223,-4.96313 5.53518,-10.01488 8.30278,-15.02232c7.23145,0 14.41826,0 21.64971,0c0,0.08863 -0.04464,0.17725 -0.08928,0.26588c-6.29404,11.03409 -12.76663,22.06818 -19.10531,33.10227c7.09753,12.00899 14.23971,24.10661 21.20332,36.15991z"/>\
+                    <path stroke="null" id="XMLID_29_" class="st0" d="m117.33555,42.2008c0.5803,2.30431 0.89277,4.83018 0.89277,7.489c0,8.28665 -2.41048,14.44624 -5.80301,19.45368c-0.5803,0.84196 -1.1606,1.68392 -1.78554,2.43725c-1.83018,2.30431 -4.01747,4.38705 -6.51723,6.11528c-1.65163,1.15215 -3.39253,2.21568 -5.31199,3.10195c-3.79428,1.77254 -8.43669,3.14627 -13.74868,3.14627c-8.30278,0 -14.41826,-2.52588 -19.37314,-5.93802c-4.95488,-3.45646 -8.83844,-8.02076 -11.47211,-13.78153c-1.78554,-3.85528 -2.90151,-8.33096 -3.03542,-13.73722c-0.04464,-2.70313 0.26783,-5.36195 0.75886,-7.62194c1.24988,-5.80508 3.705,-10.32507 6.78506,-14.26898c3.08006,-3.8996 7.00826,-6.95724 11.78458,-9.26155c1.87482,-0.88627 3.92819,-1.68392 6.20476,-2.21568c2.27657,-0.57608 4.77633,-0.93059 7.49928,-0.93059l0.04464,0c2.63368,-0.13294 5.49054,0.3102 7.67784,0.79765c2.27657,0.48745 4.41922,1.28509 6.33868,2.12705c5.89229,2.6145 10.26687,6.55842 13.79332,11.52154c2.41048,3.19058 4.15139,7.04587 5.26735,11.56585zm-26.69387,23.04308c0.22319,-0.84196 0.13392,-1.9498 0.13392,-3.05764c0,-8.55253 0,-16.97212 0,-25.56896c0,-1.10784 -0.13392,-1.9498 -0.44639,-2.74744c-0.31247,-0.70902 -0.75886,-1.37372 -1.29452,-1.9498c-1.02669,-1.06353 -2.58904,-1.99411 -4.59777,-1.86117c-0.93741,0.08863 -1.7409,0.35451 -2.45512,0.79765c-1.29452,0.79765 -2.27657,2.03843 -2.67831,3.72234c-0.22319,0.84196 -0.17855,1.90549 -0.17855,3.01333c0,8.4639 0,17.01643 0,25.56896c0,0.53176 -0.04464,1.06353 0.04464,1.55098c0.17855,1.32941 0.80349,2.43725 1.60699,3.23489c1.02669,1.01921 2.58904,1.90549 4.64241,1.68392c2.67831,-0.26588 4.59777,-1.99411 5.22271,-4.38705z"/>\
+                    <path stroke="null" id="XMLID_30_" class="st0" d="m52.16323,34.18004c-7.90103,0 -15.75742,0 -23.65845,0c-0.08928,2.9247 0,6.15959 -0.04464,9.08429c6.38332,0.04431 12.90055,0 19.3285,0c0,6.33685 0,12.67369 0,19.05486c-6.47259,0 -13.03446,-0.04431 -19.46242,0c0,7.53331 0.04464,14.978 0.04464,22.51132l0,0.04431c-6.56187,0 -13.16838,0 -19.73025,0l-0.04464,0c-0.04464,-23.17602 -0.04464,-46.5293 0,-69.70532l0,-0.04431c14.10579,0 28.16694,0 42.27273,0l0.04464,0c0.40175,6.33685 0.80349,12.71801 1.24988,19.05486z"/>\
+                </g>\
+            </g>\
+       </svg>',
+        '<\/td> <\/tr> <tr><td bgcolor=\"#ffffff\" style=\"padding: 40px 30px 40px 30px;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr>',
+        '<td style=\"color: #000000; font-family: Arial, sans-serif; font-size: 24px;\"> <b> Affiliate Outage Notification <\/b> <\/td> <\/tr> <tr> <td style=\"padding: 20px 0 30px 0; color: #000000; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;\"><b> Status Update</b>: ',
+        created_at,
+        '<br> <b> Summary</b>: ',
+        outage_summary,
+        '<br> <b> Details</b>: ',
+        outage_details,
+        '<br> <a href="',
+        html_url,'/status',
+        '"> Status Update History </a> <br><\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table><\/body><\/html>'
+    ].join('')
+}
+
+function addIncidentLink(incidentID,html_url){
+    var incidentLink=[
+        '<div class="col-md-4">\
+            <a href="',html_url, '" class="stretched-link">Navigate to PD incident ',incidentID,'</a>\
+        </div>'].join('');
+    var bstrechedlink = [
+    '<form class="form-incidentcreated">\
+        <fieldset>\
+            <div class="form-group">\
+                <label class="col-md-4 control-label" for="incsvc">PD Incident created</label>\
+                <div class="col-md-4">\
+                    <a href="',html_url, '" class="stretched-link">Navigate to PD incident ',incidentID,'</a></p>\
+                </div>\
+            </div>\
+        </fieldset>\
+    </form>'].join('');
+    $('#createIncident').prop('disabled', true);
+ //   $("body").append(bstrechedlink);
+ $('#res').after(incidentLink);
+}
+
+function resumeAction(){
+    var bsNextActions = 
+    '<form class="form-nextactions">\
+        <fieldset>\
+            <div class="form-group">\
+            <label class="col-md-4 control-label" for="Resume"></label>\
+                <div class="col-md-4">\
+                    <button id="resume" name="resume" class="btn btn-success">Resume</button>\
+                </div>\
+            <div class="col-md-8" col-md-offset=2>\
+            </div>\
+        </fieldset>\
+    </form>'
+    $('#res').after(bsNextActions);
 }
 
 //===============================================================
