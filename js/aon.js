@@ -100,8 +100,8 @@ const loadPage = function() {
                 type: `GET`,
                 success: function(data) {
                     curenUseEmail=data.user.email;
-                    document.getElementById("welcome").innerHTML = `
-                <div id="user-wrapper">
+                    document.getElementById("welcome").innerHTML = 
+                `<div id="user-wrapper">
                     <div id="pic">
                         <img src="${data.user.avatar_url}" />
                     </div>
