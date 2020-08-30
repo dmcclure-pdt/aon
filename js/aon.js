@@ -100,8 +100,8 @@ const loadPage = function() {
                 type: `GET`,
                 success: function(data) {
                     curenUseEmail=data.user.email;
-                    document.getElementById("welcome").innerHTML = 
-                `<div id="user-wrapper">
+                    document.getElementById("welcome").innerHTML = `
+                <div id="user-wrapper">
                     <div id="pic">
                         <img src="${data.user.avatar_url}" />
                     </div>
@@ -355,10 +355,10 @@ function createIncident(serviceID, title, description, fromemail, shstitle, shsu
                     id: serviceID,
                     type: "service_reference"
                 },
-                priority: {
-                   id: "P7UWA5Z",
-                   type: "priority_reference"
-                },
+                //priority: {
+                //   id: "P7UWA5Z",
+                //   type: "priority_reference"
+                //},
                 urgency: "high",
                 body: {
                     type: "incident_body",
