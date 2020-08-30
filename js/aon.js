@@ -101,7 +101,7 @@ const loadPage = function() {
                 success: function(data) {
                     curenUseEmail=data.user.email;
                     document.getElementById("welcome").innerHTML = 
-                `<div id="user-wrapper">\
+                '<div id="user-wrapper">\
                     <div id="pic">\
                         <img src="${data.user.avatar_url}" />\
                     </div>\
@@ -119,7 +119,7 @@ const loadPage = function() {
                             Time Zone: ${data.user.time_zone}\
                         </div>\
                     </div>\
-                </div>`;
+                </div>';
                     showTab("index");
                 }
             });
