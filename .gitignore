@@ -3,3 +3,6 @@
 ### Jekyll ###
 _site
 .jekyll-cache
+
+### vscode local launching
+.vscode
