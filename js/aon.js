@@ -376,7 +376,7 @@ $('#createIncident').click(function() {
     }
 
     $('#usersAlert').alert('close');
-    if (!selectedUsers ? .length) {
+    if (!selectedUsers?.length) {
         greenLight = false;
         $('#users-dropdown').after(alert("Choose at least one Stakeholder to be notified!", "users"));
     }
