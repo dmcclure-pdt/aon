@@ -1,6 +1,6 @@
 const authTab = document.getElementById("auth");
 var selectedUsers = [];
-var curenUseEmail="";
+var curenUseEmail = "";
 
 const navMap = {
     // "integrations-button": "integrations",
@@ -10,7 +10,7 @@ const navMap = {
     // "incidents-button": "incidents",
     // "trigger-button": "trigger"
     "auth-button": "auth"
-}; 
+};
 
 const userTableColumnsMap = {
     "name": "Name",
@@ -55,15 +55,15 @@ const showTab = function(tabId) {
 // });
 
 const initPDJS = function() {
-        const parsedToken = JSON.parse(localStorage.getItem("pd-token"));
-        return new PDJSobj({
-            token: parsedToken.access_token,
-            tokenType: parsedToken.token_type,
-            logging: true
-        });
-    }
+    const parsedToken = JSON.parse(localStorage.getItem("pd-token"));
+    return new PDJSobj({
+        token: parsedToken.access_token,
+        tokenType: parsedToken.token_type,
+        logging: true
+    });
+}
 
-    // pole for pd-token
+// pole for pd-token
 const authCheckingPoll = function() {
     let checking = window.setInterval(function() {
         if (localStorage.getItem("pd-token")) {
@@ -90,20 +90,20 @@ const initLogoutButton = function() {
 }
 
 const initLogoutStartButtons = function() {
-    $('#start').click(function (){
+    $('#start').click(function() {
         location.reload();
     });
-    
-    $('#inlogoutOAUTH2').click(function (){
+
+    $('#inlogoutOAUTH2').click(function() {
         localStorage.removeItem('pd-token');
-        location.reload(); 
+        location.reload();
     });
 
 }
 
-function userBio(url, uname, uemail, urole, utimezone){
+function userBio(url, uname, uemail, urole, utimezone) {
     var ub =
-            `<div id="user-wrapper">
+        `<div id="user-wrapper">
                 <div id="pic">
                     <img src="${url}" />
                 </div>
@@ -122,7 +122,7 @@ function userBio(url, uname, uemail, urole, utimezone){
                     </div>
                 </div>
             </div>`
-$('#cLogo').after(ub);
+    $('#cLogo').after(ub);
 }
 
 
@@ -138,11 +138,11 @@ const loadPage = function() {
                 res: `users/me`,
                 type: `GET`,
                 success: function(data) {
-                    curenUseEmail=data.user.email;
+                    curenUseEmail = data.user.email;
                     userBio(data.user.avatar_url, data.user.name, data.user.email, data.user.role, data.user.time_zone);
                     showTab("index");
                     initLogoutStartButtons();
-                }   
+                }
             });
         } else {
             showTab("auth");
@@ -168,7 +168,7 @@ function GetCurentUserEmail(){
   });
   }
 */
-        
+
 
 
 //===================== GET SERVICES =============================
@@ -230,15 +230,15 @@ const getServices = function() {
 const getStakeholders = function() {
     console.log("I'm in getStakeholders now....");
 
-     let stakeholderDropdown = document.getElementById('users-dropdown');
-     stakeholderDropdown.length = 0;
+    let stakeholderDropdown = document.getElementById('users-dropdown');
+    stakeholderDropdown.length = 0;
 
-     let shDefaultOption = document.createElement('option');
-     shDefaultOption.text = 'Choose Stakeholders';
-     shDefaultOption.disabled = true;
+    let shDefaultOption = document.createElement('option');
+    shDefaultOption.text = 'Choose Stakeholders';
+    shDefaultOption.disabled = true;
 
-     stakeholderDropdown.add(shDefaultOption);
-     stakeholderDropdown.selectedIndex = 0;
+    stakeholderDropdown.add(shDefaultOption);
+    stakeholderDropdown.selectedIndex = 0;
 
     const PDJS = initPDJS();
 
@@ -285,9 +285,9 @@ $('#services-dropdown').change(function() {
     console.log("the selected service ID: ", serviceID);
 
     if (document.getElementById('services-dropdown').selectedIndex)
-        document.getElementById('inctitleprefix').innerHTML=serviceName;
-    else 
-        document.getElementById('inctitleprefix').innerHTML='Incident prefix';
+        document.getElementById('inctitleprefix').innerHTML = serviceName;
+    else
+        document.getElementById('inctitleprefix').innerHTML = 'Incident prefix';
 
     // // get incident title value
     // var incTitle = $("#inctitle").val();
@@ -304,10 +304,10 @@ $("#useOutageTitle").change(copyTitle);
 
 $("#useOutageDetails").change(copyDetails);
 
-$("#users-dropdown").change(function(){
-    selectedUsers=[];
+$("#users-dropdown").change(function() {
+    selectedUsers = [];
     var usersMultipleSelection = $(this).find("option:selected");
-    usersMultipleSelection.each(function(){
+    usersMultipleSelection.each(function() {
         selectedUsers.push($(this).val());
         console.log("Stakeholders: selectedUsers.val: ", selectedUsers);
     });
@@ -317,7 +317,7 @@ function copyTitle() {
     var incTitle = getIncidentTitle();
     if (this.checked == true)
         $("#statustitle").val(incTitle);
-    else 
+    else
         $("#statustitle").val("");
 }
 
@@ -325,11 +325,11 @@ function copyDetails() {
     var incDetails = $("#incdetail").val();
     if (this.checked == true)
         $("#statusupdate").val(incDetails);
-    else 
+    else
         $("#statusupdate").val("");
 }
 
-function getIncidentTitle(){
+function getIncidentTitle() {
     var incTitle = $("#inctitle").val().text;
     if (document.getElementById('inctitleprefix').innerText != '%Incident prefix%')
         incTitle = document.getElementById('inctitleprefix').innerText + " " + $("#inctitle").val();
@@ -340,60 +340,60 @@ function getIncidentTitle(){
 $('#createIncident').click(function() {
     //createIncSh($("#services-dropdown").val(),selectedUsers);
     var incTitle = $("#inctitle").val();
-    var greenLight=true;
+    var greenLight = true;
 
     if (document.getElementById('inctitleprefix').innerText != '%Incident prefix%')
         incTitle = document.getElementById('inctitleprefix').innerText + " " + $("#inctitle").val();
-    
+
     //check the required fields and prevent the incident creation if they are not filled in
     $('#servicesAlert').alert('close');
-    if (document.getElementById('inctitleprefix').innerText == 'Incident prefix'){
+    if (document.getElementById('inctitleprefix').innerText == 'Incident prefix') {
         greenLight = false;
         $('#services-dropdown').after(alert("Choose an Affiliate Impacted!", "services"));
     }
     $('#inctitleAlert').alert('close');
-    if ($("#inctitle").val() == ""){
+    if ($("#inctitle").val() == "") {
         greenLight = false;
         $('#pfx').after(alert("Fill in the Outage Summary!", "inctitle"));
     }
 
     $('#incdetailAlert').alert('close');
-    if ($("#incdetail").val() == ""){
+    if ($("#incdetail").val() == "") {
         greenLight = false;
         $('#incdetail').after(alert("Outage Detais are mandatory!", "incdetail"));
     }
 
     $('#statustitleAlert').alert('close');
-    if ($("#statustitle").val() == ""){
+    if ($("#statustitle").val() == "") {
         greenLight = false;
         $('#statustitle').after(alert("The Stakeholder Message Title field is required!", "statustitle"));
     }
 
     $('#statusupdateAlert').alert('close');
-    if ($("#statusupdate").val() == ""){
+    if ($("#statusupdate").val() == "") {
         greenLight = false;
         $('#statusupdate').after(alert("Invalid Stakeholder Message!", "statusupdate"));
     }
 
     $('#usersAlert').alert('close');
-    if (!selectedUsers?.length){
+    if (!selectedUsers ? .length) {
         greenLight = false;
         $('#users-dropdown').after(alert("Choose at least one Stakeholder to be notified!", "users"));
     }
 
-    if (greenLight){
+    if (greenLight) {
         createIncident($("#services-dropdown").val(), incTitle, $("#incdetail").val(), curenUseEmail, $("#statustitle").val(), $("#statusupdate").val(), selectedUsers);
     }
 
 });
 
-$('#resume').click(function (){
+$('#resume').click(function() {
     location.reload();
 });
 
-$('#logoutOAUTH2').click(function (){
+$('#logoutOAUTH2').click(function() {
     localStorage.removeItem('pd-token');
-    location.reload(); 
+    location.reload();
 });
 
 //=================================================
@@ -420,10 +420,10 @@ function createIncident(serviceID, title, description, fromemail, shstitle, shsu
                     id: serviceID,
                     type: "service_reference"
                 },
-                //priority: {
-                //   id: "P7UWA5Z",
-                //   type: "priority_reference"
-                //},
+                priority: {
+                    id: "P7UWA5Z",
+                    type: "priority_reference"
+                },
                 urgency: "high",
                 body: {
                     type: "incident_body",
@@ -436,7 +436,7 @@ function createIncident(serviceID, title, description, fromemail, shstitle, shsu
             //document.getElementById("res").append(`New Affiliate Outage Incident ID: ${data.incident.id}. `);
             //incidentID=data.incident.id;
             addStakeholdersAndMessage(fromemail, shstitle, shsupdate, shs, data.incident.id, data.incident.created_at, data.incident.html_url);
-            addIncidentLink(data.incident.id,data.incident.html_url);
+            addIncidentLink(data.incident.id, data.incident.html_url);
             resumeAction();
             //loadPage();
 
@@ -445,7 +445,7 @@ function createIncident(serviceID, title, description, fromemail, shstitle, shsu
             console.log(`ERROR ADDING CONTACT METHOD: ${data.error.errors.join()}`);
         }
     });
-    
+
 };
 
 // once the incident is created and we have an incident ID, we can add the stakeholders and status message
@@ -465,68 +465,68 @@ function createIncident(serviceID, title, description, fromemail, shstitle, shsu
 // 
 // map form values into custom HTML template for email and SMS/PUSH
 
-function addStakeholdersAndMessage(fromemail, shstatustitle, shstatusupdate, stakeholders, incID, createdAt,htmlURL) {
-    if (stakeholders.length >= 1){
+function addStakeholdersAndMessage(fromemail, shstatustitle, shstatusupdate, stakeholders, incID, createdAt, htmlURL) {
+    if (stakeholders.length >= 1) {
         console.log("CI: shMessage Summary is: ", shstatustitle);
         console.log("CI: shMessage Update: ", shstatusupdate);
         console.log("CI: shMessage Update: ", stakeholders);
-        var statuspdateID="";
+        var statuspdateID = "";
         const PDJS = initPDJS();
-        var apiObj={
-            res: "incidents/"+incID+"/status_updates/subscribe_and_send",
-            type: 'POST',
-            headers: {
-                From: `${fromemail}`,
-            },
-            data: {
-                pdid: `${incID}`,
-                from: fromemail,
-                message: shstatusupdate,
-                //html_message: "<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD XHTML 1.0 Transitional\/\/EN\" \"http:\/\/www.w3.org\/TR\/xhtml1\/DTD\/xhtml1-transitional.dtd\"><html xmlns=\"http:\/\/www.w3.org\/1999\/xhtml\"><head><meta http-equiv=\"Content-Type\" content=\"text\/html; charset=UTF-8\" \/><title id=nt>Affiliate Outage Notification<\/title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"\/><\/head><body style=\"margin: 0; padding: 0;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr> <td style=\"padding: 10px 0 30px 0;\"> <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"border: 1px solid #cccccc; border-collapse: collapse;\"> <tr> <td align=\"center\" bgcolor=\"#ffffff\" style=\"padding: 40px 0 30px 0; color: #ffffff; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;\"> <img src=\"https://static-media.fox.com/foxnow/web/v3-2/img/fox_logo.jpg\" alt=\"Fox_Broadcasting_Company_logo\" width=\"561\" height=\"324\" style=\"display: block;\" \/> <\/td> <\/tr> <tr> <td bgcolor=\"#ffffff\" style=\"padding: 40px 30px 40px 30px;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr> <td style=\"color: #000000; font-family: Arial, sans-serif; font-size: 24px;\"> <b>Affiliate Outage Notification<\/b> <\/td> <\/tr> <tr> <td style=\"padding: 20px 0 30px 0; color: #000000; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;\">Status: Outage <br> Update: Restoration in progress. <br> Slack/Zoom: #outage <br> Incident Commander: Frank Smith <br><\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table><\/body><\/html>",
-                html_message: buildStatusUpdateHTML(shstatustitle,shstatusupdate,createdAt,htmlURL),
-                subject: shstatustitle,
-                recipients: []
-            },
-            success: function(data) {
-                statuspdateID=data.status_update.id;
-                console.log(`SUCCESS ADDING STAKEHOLDERS & MESSAGES!`);
-            },
-            error: function(data) {
-                console.log(`ERROR ADDING STAKEHOLDERS & MESSAGES : ${data.error.errors.join()}`);
+        var apiObj = {
+                res: "incidents/" + incID + "/status_updates/subscribe_and_send",
+                type: 'POST',
+                headers: {
+                    From: `${fromemail}`,
+                },
+                data: {
+                    pdid: `${incID}`,
+                    from: fromemail,
+                    message: shstatusupdate,
+                    //html_message: "<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD XHTML 1.0 Transitional\/\/EN\" \"http:\/\/www.w3.org\/TR\/xhtml1\/DTD\/xhtml1-transitional.dtd\"><html xmlns=\"http:\/\/www.w3.org\/1999\/xhtml\"><head><meta http-equiv=\"Content-Type\" content=\"text\/html; charset=UTF-8\" \/><title id=nt>Affiliate Outage Notification<\/title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"\/><\/head><body style=\"margin: 0; padding: 0;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr> <td style=\"padding: 10px 0 30px 0;\"> <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"border: 1px solid #cccccc; border-collapse: collapse;\"> <tr> <td align=\"center\" bgcolor=\"#ffffff\" style=\"padding: 40px 0 30px 0; color: #ffffff; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;\"> <img src=\"https://static-media.fox.com/foxnow/web/v3-2/img/fox_logo.jpg\" alt=\"Fox_Broadcasting_Company_logo\" width=\"561\" height=\"324\" style=\"display: block;\" \/> <\/td> <\/tr> <tr> <td bgcolor=\"#ffffff\" style=\"padding: 40px 30px 40px 30px;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr> <td style=\"color: #000000; font-family: Arial, sans-serif; font-size: 24px;\"> <b>Affiliate Outage Notification<\/b> <\/td> <\/tr> <tr> <td style=\"padding: 20px 0 30px 0; color: #000000; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;\">Status: Outage <br> Update: Restoration in progress. <br> Slack/Zoom: #outage <br> Incident Commander: Frank Smith <br><\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table><\/body><\/html>",
+                    html_message: buildStatusUpdateHTML(shstatustitle, shstatusupdate, createdAt, htmlURL),
+                    subject: shstatustitle,
+                    recipients: []
+                },
+                success: function(data) {
+                    statuspdateID = data.status_update.id;
+                    console.log(`SUCCESS ADDING STAKEHOLDERS & MESSAGES!`);
+                },
+                error: function(data) {
+                    console.log(`ERROR ADDING STAKEHOLDERS & MESSAGES : ${data.error.errors.join()}`);
+                }
             }
+            //apiObj.headers['X-EARLY-ACCESS']= 'advanced-status-update';
+        if (APP_CONFIG.redirectStatusUpdateUrl != "") {
+            apiObj.headers['X-REDIRECT-URL'] = APP_CONFIG.redirectStatusUpdateUrl;
         }
-        //apiObj.headers['X-EARLY-ACCESS']= 'advanced-status-update';
-        if(APP_CONFIG.redirectStatusUpdateUrl!=""){
-            apiObj.headers['X-REDIRECT-URL']= APP_CONFIG.redirectStatusUpdateUrl;
-        }
-        for (i=0; i < stakeholders.length; i++){
+        for (i = 0; i < stakeholders.length; i++) {
             apiObj.data.recipients.push(buildRecipientsBlockByUser(stakeholders[i]));
         }
 
         PDJS.api(apiObj);
- 
+
     }
 };
 
 
-function buildRecipientsBlockByUser(userID){
-    var userObj={
-            "user": {
-                "id":"",
-                "type": "user_reference"
-            },
-            "contact_methods": [
-                "sms",
-                "email",
-                "push_notification"
-            ]
-        }
-        userObj.user.id = userID;
+function buildRecipientsBlockByUser(userID) {
+    var userObj = {
+        "user": {
+            "id": "",
+            "type": "user_reference"
+        },
+        "contact_methods": [
+            "sms",
+            "email",
+            "push_notification"
+        ]
+    }
+    userObj.user.id = userID;
     return userObj;
 }
 
 
-function buildStatusUpdateHTML(outage_summary,outage_details,created_at,html_url){
+function buildStatusUpdateHTML(outage_summary, outage_details, created_at, html_url) {
     return [
         '<!DOCTYPE html PUBLIC \"-\/\/W3C\/\/DTD XHTML 1.0 Transitional\/\/EN\" \"http:\/\/www.w3.org\/TR\/xhtml1\/DTD\/xhtml1-transitional.dtd\"><html xmlns=\"http:\/\/www.w3.org\/1999\/xhtml\"><head><meta http-equiv=\"Content-Type\" content=\"text\/html; charset=UTF-8\" \/><title> Affiliate Outage Notification <\/title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"\/><\/head>',
         '<body style=\"margin: 0; padding: 0;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr> <td style=\"padding: 10px 0 30px 0;\"> <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"border: 1px solid #cccccc; border-collapse: collapse;\"> <tr> <td align=\"center\" bgcolor=\"#ffffff\" style=\"padding: 0 0 0 5px; color: #ffffff;',
@@ -540,40 +540,42 @@ function buildStatusUpdateHTML(outage_summary,outage_details,created_at,html_url
         '<br> <b> Details</b>: ',
         outage_details,
         '<br> <a href="',
-        html_url,'/status',
+        html_url, '/status',
         '"> Status Update History </a> <br><\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table> <\/td> <\/tr> <\/table><\/body><\/html>'
     ].join('')
 }
 
-function addIncidentLink(incidentID,html_url){
-    var incidentCreatedBtn=[
-    '<div id="icgrp" class="btn-group mb-2 mr-2" role="group" aria-label="create Incident group">\
-        <a href="',html_url, '" class="btn btn-outline-success" role="button" target="_blank">Navigate to the PD incident ',incidentID,'</a>\
-    </div>'].join('');
+function addIncidentLink(incidentID, html_url) {
+    var incidentCreatedBtn = [
+        '<div id="icgrp" class="btn-group mb-2 mr-2" role="group" aria-label="create Incident group">\
+        <a href="', html_url, '" class="btn btn-outline-success" role="button" target="_blank">Navigate to the PD incident ', incidentID, '</a>\
+    </div>'
+    ].join('');
 
     $('#createIncident').prop('disabled', true);
     $("#cigrp").after(incidentCreatedBtn);
 }
 
-function resumeAction(){
-    var resButton=
-    `<div id="rsgrp" class="btn-group" role="group" aria-label="Resume group">
+function resumeAction() {
+    var resButton =
+        `<div id="rsgrp" class="btn-group" role="group" aria-label="Resume group">
         <button id="resume" name="resume" class="btn btn-outline-secondary">Resume</button>
     </div>`;
     $('#logrp').after(resButton);
 }
 
-function alert(message, prefix){
+function alert(message, prefix) {
     return [
-    '<div id="',
-    prefix,
-    'Alert" class="alert alert-danger alert-dismissible fade show" role="alert">',
-    message,
-    '<button type="button" class="close" data-dismiss="alert" aria-label="Close">\
+        '<div id="',
+        prefix,
+        'Alert" class="alert alert-danger alert-dismissible fade show" role="alert">',
+        message,
+        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">\
         <span aria-hidden="true">&times;</span>\
     </button>\
-    </div>'].join('');
-    
+    </div>'
+    ].join('');
+
 }
 
 //===============================================================
