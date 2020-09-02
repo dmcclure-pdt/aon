@@ -376,7 +376,7 @@ $('#createIncident').click(function() {
     }
 
     $('#usersAlert').alert('close');
-    if (!selectedUsers?.length) {
+    if (!selectedUsers ? .length) {
         greenLight = false;
         $('#users-dropdown').after(alert("Choose at least one Stakeholder to be notified!", "users"));
     }
@@ -548,7 +548,7 @@ function buildStatusUpdateHTML(outage_summary, outage_details, created_at, html_
 function addIncidentLink(incidentID, html_url) {
     var incidentCreatedBtn = [
         '<div id="icgrp" class="btn-group mb-2 mr-2" role="group" aria-label="create Incident group">\
-        <iframe id="incframe" sandbox="allow-popups"> </iframe> <a href="', html_url, '" class="btn btn-outline-success" role="button" target="_blank">Navigate to the PD incident ', incidentID, '</a>\
+         <button id="increated" name="increated" class="btn btn-outline-success" disabled>Succesfully created outage incident ', incidentID, '</button>\
     </div>'
     ].join('');
 
