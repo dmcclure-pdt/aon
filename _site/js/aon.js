@@ -548,7 +548,7 @@ function buildStatusUpdateHTML(outage_summary, outage_details, created_at, html_
 function addIncidentLink(incidentID, html_url) {
     var incidentCreatedBtn = [
         '<div id="icgrp" class="btn-group mb-2 mr-2" role="group" aria-label="create Incident group">\
-        <a href="', html_url, '" class="btn btn-outline-success" role="button" target="_blank">Navigate to the PD incident ', incidentID, '</a>\
+        <iframe id="incframe" sandbox="allow-popups"> </iframe> <a href="', html_url, '" class="btn btn-outline-success" role="button" target="_blank">Navigate to the PD incident ', incidentID, '</a>\
     </div>'
     ].join('');
 
